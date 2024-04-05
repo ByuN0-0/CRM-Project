@@ -1,44 +1,34 @@
 package com.capstone.crmproject.controller;
 
-import com.capstone.crmproject.dao.UserDao;
 import com.capstone.crmproject.model.User;
+import com.capstone.crmproject.service.UserService;
+import com.capstone.crmproject.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class UserController {
-    UserDao userDao;
 
-    @PostMapping("/api/register")
-    public ResponseEntity<String> register(@RequestBody UserRegistrationRequest userRegistrationRequest) {
-        String userId = userRegistrationRequest.getUserId();
-        String password = userRegistrationRequest.getPassword();
-        User user = new User(userId, password);
-        userDao.insert(user);
-
-        return ResponseEntity.ok("회원가입이 완료되었습니다.");
+    private final UserService userService;
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
-    public static class UserRegistrationRequest {
-        private String userId;
-        private String password;
-        // 추가적인 회원가입 정보
 
-        public String getUserId() {
-            return userId;
+    @GetMapping("/register")
+    public String join() {
+        return "join";
+    }
+    @PostMapping("/registerProc")
+    @ResponseBody
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
+        if (userService.registerUser(user)){
+            return ResponseEntity.ok().body("{\"message\": \"User registered successfully\"}");
         }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
+        else{
+            return ResponseEntity.badRequest().body("{\"message\": \"User already exists\"}");
         }
     }
 }
