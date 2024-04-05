@@ -4,7 +4,10 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" content="{{_csrf.token}}"/>
+    <meta name="_csrf_header" content="{{_csrf.headerName}}"/>
     <title>Register</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
 join page
@@ -18,7 +21,8 @@ join page
 <script>
     document.getElementById('registerForm').addEventListener('submit', function(event) {
         event.preventDefault(); // 폼 제출 방지
-
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         var formData = {
             userName: document.getElementById('userName').value,
             password: document.getElementById('password').value,
@@ -29,6 +33,8 @@ join page
         fetch('/registerProc', {
             method: 'POST',
             headers: {
+                'X-CSRF-TOKEN': token,
+                'X-CSRF-HEADER': header,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)

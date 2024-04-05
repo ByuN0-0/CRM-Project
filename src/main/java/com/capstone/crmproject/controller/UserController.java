@@ -25,9 +25,11 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         if (userService.registerUser(user)){
+            System.out.println("User registered successfully");
             return ResponseEntity.ok().body("{\"message\": \"User registered successfully\"}");
         }
         else{
+            System.out.println("User already exists");
             return ResponseEntity.badRequest().body("{\"message\": \"User already exists\"}");
         }
     }

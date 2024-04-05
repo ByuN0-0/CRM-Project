@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (userData != null) {
             return new CustomUserDetails(userData);
         }
-
+        System.out.println("User not found with username: " + username);
         return null;
     }
 }

@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -25,11 +24,26 @@ public class SecurityConfig {
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/loginProc")
-                        .defaultSuccessUrl("/my")
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 );
+        //http
+        //        .csrf((auth)->auth.disable());
         http
-                .csrf((auth)->auth.disable());
+                .sessionManagement((session) -> session
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(true)
+                );
+        http
+                .sessionManagement((session) -> session
+                        .sessionFixation().changeSessionId()
+                );
+        http
+                .logout((logout) -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                );
         return http.build();
     }
     @Bean

@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
         data.setUserName(user.getUserName());
         data.setPassword(passwordEncoder.encode(user.getPassword()));
         data.setUserNick(user.getUserNick());
-        data.setRole("ROLE_ADMIN");
+        data.setRole("ROLE_USER");
 
         userRepository.save(data);
         return true;
