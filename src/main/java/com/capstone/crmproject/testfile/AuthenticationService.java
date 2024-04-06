@@ -1,4 +1,4 @@
-package com.capstone.crmproject.service;
+package com.capstone.crmproject.testfile;
 
 import com.capstone.crmproject.model.User;
 import com.capstone.crmproject.repository.UserRepository;

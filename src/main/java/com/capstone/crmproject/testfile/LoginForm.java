@@ -1,4 +1,4 @@
-package com.capstone.crmproject.model;
+package com.capstone.crmproject.testfile;
 
 import lombok.Getter;
 import lombok.Setter;

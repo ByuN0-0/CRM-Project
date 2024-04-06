@@ -1,7 +1,7 @@
-package com.capstone.crmproject.controller;
+package com.capstone.crmproject.testfile;
 
-import com.capstone.crmproject.model.LoginForm;
-import com.capstone.crmproject.service.AuthenticationService;
+import com.capstone.crmproject.testfile.LoginForm;
+import com.capstone.crmproject.testfile.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
