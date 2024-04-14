@@ -86,10 +86,12 @@ Content-Type: application/json
 - 실패시 failureUrl("/login?error=true")을 반환합니다.
 
 csrf 설정을 위해 ```<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>``` 구문 추가
+```html
 <form action="/loginProc" method="post">
     <input id="userName" type="text" name="username" placeholder="id"/>
     <input id="password" type="password" name="password" placeholder="password"/>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
     <input type="submit" value="login"/>
 </form>
+```
 요청을 위한 엔드포인트는 /api/loginProc입니다.
