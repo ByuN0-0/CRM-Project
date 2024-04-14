@@ -85,7 +85,7 @@ Content-Type: application/json
 - 성공시 HTTP 상태 코드 200을 반환하고 "/" 루트 디렉토리를 리다이렉팅합니다.
 - 실패시 failureUrl("/login?error=true")을 반환합니다.
 
-csrf 설정을 위해 "<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>" 구문 추가
+csrf 설정을 위해 ```<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>``` 구문 추가
 <form action="/loginProc" method="post">
     <input id="userName" type="text" name="username" placeholder="id"/>
     <input id="password" type="password" name="password" placeholder="password"/>
