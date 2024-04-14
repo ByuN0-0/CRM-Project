@@ -1,8 +1,7 @@
 package com.capstone.crmproject.controller;
 
-import com.capstone.crmproject.model.User;
+import com.capstone.crmproject.request.UserRegisterRequest;
 import com.capstone.crmproject.service.UserService;
-import com.capstone.crmproject.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,10 +20,10 @@ public class UserController {
     public String join() {
         return "join";
     }
-    @PostMapping("/registerProc")
+    @PostMapping("/api/registerProc")
     @ResponseBody
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
-        if (userService.registerUser(user)){
+    public ResponseEntity<String> registerUser(@RequestBody UserRegisterRequest userRegisterRequest) {
+        if (userService.registerUser(userRegisterRequest)){
             System.out.println("User registered successfully");
             return ResponseEntity.ok().body("{\"message\": \"User registered successfully\"}");
         }
