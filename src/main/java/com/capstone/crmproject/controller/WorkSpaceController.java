@@ -17,16 +17,8 @@ public class WorkSpaceController {
         this.workSpaceService = workSpaceService;
     }
     @PostMapping("/api/addWorkMember")
-    @ResponseBody // Todo
+    @ResponseBody
     public ResponseEntity<String> addMember(@RequestBody AddMemberRequest member) {
-
-        if (workSpaceService.addMember(member)){
-            System.out.println("User registered successfully");
-            return ResponseEntity.ok().body("{\"message\": \"User registered successfully\"}");
-        }
-        else{
-            System.out.println("User already exists");
-            return ResponseEntity.badRequest().body("{\"message\": \"User already exists\"}");
-        }
+        return workSpaceService.addMember(member);
     }
 }

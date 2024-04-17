@@ -23,13 +23,6 @@ public class UserController {
     @PostMapping("/api/registerProc")
     @ResponseBody
     public ResponseEntity<String> registerUser(@RequestBody UserRegisterRequest userRegisterRequest) {
-        if (userService.registerUser(userRegisterRequest)){
-            System.out.println("User registered successfully");
-            return ResponseEntity.ok().body("{\"message\": \"User registered successfully\"}");
-        }
-        else{
-            System.out.println("User already exists");
-            return ResponseEntity.badRequest().body("{\"message\": \"User already exists\"}");
-        }
+        return userService.registerUser(userRegisterRequest);
     }
 }

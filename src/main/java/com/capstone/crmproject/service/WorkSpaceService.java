@@ -4,6 +4,7 @@ import com.capstone.crmproject.model.WorkSpace;
 import com.capstone.crmproject.request.AddMemberRequest;
 import com.capstone.crmproject.repository.WorkSpaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,10 +14,11 @@ public class WorkSpaceService {
     public WorkSpaceService(WorkSpaceRepository workSpaceRepository) {
         this.workSpaceRepository = workSpaceRepository;
     }
-    public boolean addMember(AddMemberRequest member){
-        WorkSpace workSpace = workSpaceRepository.findByNameAndOwner(member.getMemberName(),member.getOwner());
-        workSpace.getMemberIds().add(member.getMemberName());
-        workSpaceRepository.save(workSpace);
-        return true;
+    public ResponseEntity<String> addMember(AddMemberRequest member){
+        WorkSpace workSpace = workSpaceRepository.findByNameAndOwner(member.getWorkSpaceName(),member.getOwner());
+        if (workSpace==null) return ResponseEntity.badRequest().body("{\"message\": \"can't find workspace\"}");
+        if (workSpace.getMemberIds().add(member.getMemberName())) return ResponseEntity.badRequest().body("{\"message\": \"can't add new member\"}");
+        if (workSpaceRepository.save(workSpace)==null) return ResponseEntity.badRequest().body("{\"message\": \"can't save new member\"}");
+        return ResponseEntity.ok().body("{\"message\": \"User registered successfully\"}");
     }
 }
