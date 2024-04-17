@@ -23,23 +23,24 @@ public class UserService{
         this.passwordEncoder = passwordEncoder;
     }
     public ResponseEntity<String> registerUser(UserRegisterRequest URRequest){
-        User user = new User(URRequest);
-        String userName = user.getUserName();
-        if (userRepository.existsByUserName(user.getUserName())) {
+        //Todo
+        if (userRepository.existsByUserName(URRequest.getUserName())) {
             return ResponseEntity.badRequest().body("{\"message\": \"User already exists\"}");
         }
-        //Todo builder패턴으로 바꾸기
-        User data = new User();
-        data.setUserName(userName);
-        data.setPassword(passwordEncoder.encode(user.getPassword()));
-        data.setUserNick(userName);
-        data.setRole("ROLE_USER");
-        userRepository.save(data);
+        User user = User.builder()
+                .userName(URRequest.getUserName())
+                .password(passwordEncoder.encode(URRequest.getPassword()))
+                .userNick(URRequest.getUserNick())
+                .role("ROLE_USER")
+                .build();
 
-        WorkSpace workSpace = new WorkSpace();
-        workSpace.setName(URRequest.getWorkSpaceName());
-        workSpace.setOwner(userName);
-        workSpace.getMemberIds().add(user.getUserName());
+        userRepository.save(user);
+
+        WorkSpace workSpace = WorkSpace.builder()
+                .name(URRequest.getWorkSpaceName())
+                .owner(URRequest.getUserName())
+                .memberId(URRequest.getUserName())
+                .build();
         WorkSpaceRepository.save(workSpace);
         return ResponseEntity.ok().body("{\"message\": \"User registered successfully\"}");
     }

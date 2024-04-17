@@ -17,8 +17,8 @@ public class WorkSpaceService {
     public ResponseEntity<String> addMember(AddMemberRequest member){
         WorkSpace workSpace = workSpaceRepository.findByNameAndOwner(member.getWorkSpaceName(),member.getOwner());
         if (workSpace==null) return ResponseEntity.badRequest().body("{\"message\": \"can't find workspace\"}");
-        if (workSpace.getMemberIds().add(member.getMemberName())) return ResponseEntity.badRequest().body("{\"message\": \"can't add new member\"}");
-        if (workSpaceRepository.save(workSpace)==null) return ResponseEntity.badRequest().body("{\"message\": \"can't save new member\"}");
-        return ResponseEntity.ok().body("{\"message\": \"User registered successfully\"}");
+        workSpace.getMemberIds().add(member.getMemberName());
+        workSpaceRepository.save(workSpace);
+        return ResponseEntity.ok().body("{\"message\": \"member added successfully\"}");
     }
 }

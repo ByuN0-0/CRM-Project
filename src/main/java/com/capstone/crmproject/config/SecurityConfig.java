@@ -15,7 +15,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/login","loginProc","/register","/api/registerProc").permitAll()
+                        .requestMatchers("/", "/login","/api/loginProc","/register","/api/registerProc").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
@@ -23,7 +23,7 @@ public class SecurityConfig {
         http
                 .formLogin((form) -> form
                         .loginPage("/login")
-                        .loginProcessingUrl("/loginProc")
+                        .loginProcessingUrl("/api/loginProc")
                         .defaultSuccessUrl("/")
                         .failureUrl("/login?error=true")
                         .permitAll()

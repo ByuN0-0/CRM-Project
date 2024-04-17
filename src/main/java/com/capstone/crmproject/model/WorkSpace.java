@@ -1,21 +1,21 @@
 package com.capstone.crmproject.model;
 
-import com.capstone.crmproject.repository.WorkSpaceRepository;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Singular;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "workspaces")
+@Builder
 @Getter
 @Setter
 public class WorkSpace {
-    String owner;
-    String name;
+    private String owner;
+    private String name;
+    @Singular
     private List<String> memberIds;
-    public WorkSpace(){
-        this.memberIds = new ArrayList<>();
-    }
+    public WorkSpace(){}
 }
