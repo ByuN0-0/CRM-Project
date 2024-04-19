@@ -9,7 +9,7 @@
 <body>
 login page
 <hr>
-<form action="/loginProc" method="post">
+<form action="/api/login" method="post">
     <input id="userName" type="text" name="username" placeholder="id"/>
     <input id="password" type="password" name="password" placeholder="password"/>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>

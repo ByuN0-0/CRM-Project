@@ -11,11 +11,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/login","/api/loginProc","/register","/api/registerProc").permitAll()
+                        .requestMatchers("/", "/login", "/api/login", "/register", "/api/register", "/api/addWorkMember", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
@@ -23,13 +23,11 @@ public class SecurityConfig {
         http
                 .formLogin((form) -> form
                         .loginPage("/login")
-                        .loginProcessingUrl("/api/loginProc")
+                        .loginProcessingUrl("/api/login")
                         .defaultSuccessUrl("/")
                         .failureUrl("/login?error=true")
                         .permitAll()
                 );
-        //http
-        //        .csrf((auth)->auth.disable());
         http
                 .sessionManagement((session) -> session
                         .maximumSessions(1)
@@ -46,6 +44,11 @@ public class SecurityConfig {
                 );
         return http.build();
     }
+    /*
+    private AuthenticationFailureHandler loginFailHandler() {
+        return new LoginFailHandler();
+    }
+    */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

@@ -15,7 +15,7 @@ join page
     <input type="text" id="userName" placeholder="Username"/>
     <input type="password" id="password" placeholder="Password"/>
     <input type="text" id="userNick" placeholder="Name"/>
-    <input type="text" id="workspaceName" placeholder="Workspace Name" />
+    <input type="text" id="workSpaceName" placeholder="Workspace Name" />
     <input type="submit" value="Join"/>
 </form>
 
@@ -28,11 +28,11 @@ join page
             userName: document.getElementById('userName').value,
             password: document.getElementById('password').value,
             userNick: document.getElementById('userNick').value,
-            workspaceName: document.getElementById('workspaceName').value
+            workSpaceName: document.getElementById('workSpaceName').value
         };
 
         // AJAX 요청 보내기
-        fetch('/api/registerProc', {
+        fetch('/api/register', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': token,

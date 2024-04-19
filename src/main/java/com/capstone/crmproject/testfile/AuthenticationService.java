@@ -13,8 +13,8 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
-    public boolean authenticate(String username, String password){
-        User extendedUser = userRepository.findByUserName(username);
+    public boolean authenticate(String userId, String password){
+        User extendedUser = userRepository.findByUserName(userId);
         if (extendedUser == null) {
             return false; // 사용자가 존재하지 않음
         } else {

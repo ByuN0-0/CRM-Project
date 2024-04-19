@@ -1,4 +1,4 @@
-package com.capstone.crmproject.controller;
+package com.capstone.crmproject.testfile;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;

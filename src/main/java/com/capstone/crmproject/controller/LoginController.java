@@ -1,4 +1,4 @@
-package com.capstone.crmproject.testfile;
+package com.capstone.crmproject.controller;
 
 import com.capstone.crmproject.testfile.LoginForm;
 import com.capstone.crmproject.testfile.AuthenticationService;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller
+
 public class LoginController {
     private final AuthenticationService authenticationService;
     public LoginController(AuthenticationService authenticationService){
@@ -19,7 +19,7 @@ public class LoginController {
     public String login() {
         return "login";
     }
-    @PostMapping("/loginProc")
+    @PostMapping("/api/login")
     @ResponseBody
     public ResponseEntity<String> loginProc(@RequestBody LoginForm loginForm){
         System.out.println("여기 유저네임: "+loginForm.getUserName());

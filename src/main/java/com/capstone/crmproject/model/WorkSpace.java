@@ -17,5 +17,4 @@ public class WorkSpace {
     private String name;
     @Singular
     private List<String> memberIds;
-    public WorkSpace(){}
 }

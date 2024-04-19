@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" content="{{_csrf.token}}"/>
+    <meta name="_csrf_header" content="{{_csrf.headerName}}"/>
+    <title>main</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
 mainpage
@@ -11,5 +17,43 @@ mainpage
 {{role}}
 <input type="button" value="login" onclick="location.href='/login'">
 <input type="button" value="register" onclick="location.href='/register'">
+<br>
+<form id="rememberable">
+    <input type="text" id="owner" placeholder="owner"/>
+    <input type="text" id="workSpaceName" placeholder="Workspace Name" />
+    <input type="text" id="memberName" placeholder="Name"/>
+    <input type="submit" value="rememberable"/>
+</form>
+<script>
+    document.getElementById('rememberable').addEventListener('submit', function(event) {
+        event.preventDefault(); // 폼 제출 방지
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var formData = {
+            owner: document.getElementById('owner').value,
+            workSpaceName: document.getElementById('workSpaceName').value,
+            memberName: document.getElementById('memberName').value
+        };
+
+        // AJAX 요청 보내기
+        fetch('/api/addWorkMember', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': token,
+                'X-CSRF-HEADER': header,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // 서버로부터 받은 응답 처리
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+    });
+</script>
 </body>
 </html>

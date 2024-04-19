@@ -24,8 +24,8 @@ public class MainController {
         Iterator<? extends GrantedAuthority> iter = authorities.iterator();
         GrantedAuthority auth = iter.next();
         String role = auth.getAuthority();
-        model.addAttribute("id",id);
-        model.addAttribute("role",role);
+        model.addAttribute("id", id);
+        model.addAttribute("role", role);
         return "main";
     }
 }
