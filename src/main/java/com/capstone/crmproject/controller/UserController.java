@@ -1,10 +1,13 @@
 package com.capstone.crmproject.controller;
 
-import com.capstone.crmproject.model.User;
-import com.capstone.crmproject.model.WorkSpace;
+import com.capstone.crmproject.dto.RegisterUserDTO;
+import com.capstone.crmproject.entity.UserEntity;
+import com.capstone.crmproject.entity.WorkspaceEntity;
+import com.capstone.crmproject.entity.WorkspaceMemberEntity;
 import com.capstone.crmproject.request.UserRegisterRequest;
 import com.capstone.crmproject.service.UserService;
-import com.capstone.crmproject.service.WorkSpaceService;
+import com.capstone.crmproject.service.WorkspaceMemberService;
+import com.capstone.crmproject.service.WorkspaceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final WorkSpaceService workSpaceService;
+    private final WorkspaceService workspaceService;
+    private final WorkspaceMemberService workspaceMemberService;
 
-    public UserController(UserService userService, WorkSpaceService workSpaceService) {
+    public UserController(UserService userService, WorkspaceService workspaceService, WorkspaceMemberService workspaceMemberService) {
         this.userService = userService;
-        this.workSpaceService = workSpaceService;
+        this.workspaceService = workspaceService;
+        this.workspaceMemberService = workspaceMemberService;
     }
 
 
@@ -28,15 +33,14 @@ public class UserController {
 
     @PostMapping("/api/register")
     @ResponseBody
-    public ResponseEntity<String> registerUser(@RequestBody UserRegisterRequest userRegisterRequest) {
+    public String registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
         try {
-            User newUser = userService.registerUser(userRegisterRequest);
-            WorkSpace newWorkSpace = workSpaceService.createWorkSpace(userRegisterRequest);
-            String message = "User registered with ID: " + newUser.getUserName() + ", Workspace created with Name: " + newWorkSpace.getName();
-            return ResponseEntity.ok().body("{\"message\": \"" + message + "\"}");
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"message\": \"register failed\"}");
+            UserEntity newUser = userService.registerUser(registerUserDTO);
+            WorkspaceEntity newWorkSpace = workspaceService.createWorkspace(registerUserDTO.getWorkspaceName(), newUser);
+            WorkspaceMemberEntity newMember = workspaceMemberService.addMember(newWorkSpace.getWorkspaceId(), newUser.getUsername());
+            return "User registered with ID: " + newUser.getUsername() + ", Workspace created with Name: " + newWorkSpace.getName() + ", Member added to workspace: " + newMember.getMemberId();
+        } catch (Exception e) {
+            return e.getMessage();
         }
     }
 }

@@ -1,12 +1,10 @@
 package com.capstone.crmproject.request;
 
-import com.capstone.crmproject.model.User;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class UserRegisterRequest {
-    private String userName;
+    private String username;
     private String password;
     private String userNick;
     private String role;

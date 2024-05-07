@@ -28,4 +28,5 @@ public class MainController {
         model.addAttribute("role", role);
         return "main";
     }
+
 }
