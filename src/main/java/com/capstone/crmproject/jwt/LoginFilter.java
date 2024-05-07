@@ -1,6 +1,6 @@
 package com.capstone.crmproject.jwt;
 
-import com.capstone.crmproject.dto.CustomUserDetails;
+import com.capstone.crmproject.security.CustomUserDetails;
 import com.capstone.crmproject.dto.LoginDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;

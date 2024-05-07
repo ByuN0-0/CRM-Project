@@ -1,4 +1,4 @@
-package com.capstone.crmproject.dto;
+package com.capstone.crmproject.security;
 
 
 import com.capstone.crmproject.entity.UserEntity;

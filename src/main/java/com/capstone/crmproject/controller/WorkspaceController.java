@@ -1,6 +1,6 @@
 package com.capstone.crmproject.controller;
 
-import com.capstone.crmproject.dto.CustomUserDetails;
+import com.capstone.crmproject.security.CustomUserDetails;
 import com.capstone.crmproject.entity.WorkspaceEntity;
 import com.capstone.crmproject.service.UserService;
 import com.capstone.crmproject.service.WorkspaceService;

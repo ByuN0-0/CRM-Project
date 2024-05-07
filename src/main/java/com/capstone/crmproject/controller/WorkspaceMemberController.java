@@ -1,11 +1,8 @@
 package com.capstone.crmproject.controller;
 
-import com.capstone.crmproject.dto.CustomUserDetails;
 import com.capstone.crmproject.dto.WorkspaceDTO;
-import com.capstone.crmproject.entity.WorkspaceEntity;
 import com.capstone.crmproject.entity.WorkspaceMemberEntity;
 import com.capstone.crmproject.request.WorkspaceMemberRequest;
-import com.capstone.crmproject.request.WorkspaceRequest;
 import com.capstone.crmproject.service.WorkspaceMemberService;
 
 import com.capstone.crmproject.service.WorkspaceService;
@@ -19,9 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
