@@ -5,11 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -25,7 +24,7 @@ public class DealEntity {
     private String phoneNumber;
     private String email;
     private String memo;
-    private Date createDate;
-    private Date updateDate;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
     private String customAttribute;
 }
