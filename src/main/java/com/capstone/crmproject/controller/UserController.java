@@ -1,8 +1,13 @@
 package com.capstone.crmproject.controller;
 
+import com.capstone.crmproject.dto.RegisterUserDTO;
+import com.capstone.crmproject.entity.UserEntity;
+import com.capstone.crmproject.entity.WorkspaceEntity;
+import com.capstone.crmproject.entity.WorkspaceMemberEntity;
 import com.capstone.crmproject.request.UserRegisterRequest;
 import com.capstone.crmproject.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.capstone.crmproject.service.WorkspaceMemberService;
+import com.capstone.crmproject.service.WorkspaceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,18 +16,31 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    @Autowired
-    public UserController(UserService userService) {
+    private final WorkspaceService workspaceService;
+    private final WorkspaceMemberService workspaceMemberService;
+
+    public UserController(UserService userService, WorkspaceService workspaceService, WorkspaceMemberService workspaceMemberService) {
         this.userService = userService;
+        this.workspaceService = workspaceService;
+        this.workspaceMemberService = workspaceMemberService;
     }
+
 
     @GetMapping("/register")
     public String join() {
         return "join";
     }
-    @PostMapping("/api/registerProc")
+
+    @PostMapping("/api/register")
     @ResponseBody
-    public ResponseEntity<String> registerUser(@RequestBody UserRegisterRequest userRegisterRequest) {
-        return userService.registerUser(userRegisterRequest);
+    public String registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
+        try {
+            UserEntity newUser = userService.registerUser(registerUserDTO);
+            WorkspaceEntity newWorkSpace = workspaceService.createWorkspace(registerUserDTO.getWorkspaceName(), newUser);
+            WorkspaceMemberEntity newMember = workspaceMemberService.addMember(newWorkSpace.getWorkspaceId(), newUser.getUsername());
+            return "User registered with ID: " + newUser.getUsername() + ", Workspace created with Name: " + newWorkSpace.getName() + ", Member added to workspace: " + newMember.getMemberId();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }

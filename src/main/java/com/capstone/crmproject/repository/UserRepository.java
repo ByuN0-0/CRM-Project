@@ -1,11 +1,13 @@
 package com.capstone.crmproject.repository;
 
-import com.capstone.crmproject.model.User;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.capstone.crmproject.entity.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
-    boolean existsByUserName(String username);
-    User findByUserName(String username);
+public interface UserRepository extends JpaRepository<UserEntity, UUID> {
+    Boolean existsByUsername(String username);
+    UserEntity findByUsername(String username);
 }
