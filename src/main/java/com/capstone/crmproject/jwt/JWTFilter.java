@@ -1,7 +1,7 @@
 package com.capstone.crmproject.jwt;
 
 import com.capstone.crmproject.security.CustomUserDetails;
-import com.capstone.crmproject.dto.UserRole;
+import com.capstone.crmproject.security.UserRole;
 import com.capstone.crmproject.entity.UserEntity;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

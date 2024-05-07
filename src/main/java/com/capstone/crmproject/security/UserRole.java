@@ -1,4 +1,4 @@
-package com.capstone.crmproject.dto;
+package com.capstone.crmproject.security;
 
 public enum UserRole {
     ROLE_ADMIN,

@@ -4,14 +4,11 @@ package com.capstone.crmproject.service;
 import com.capstone.crmproject.dto.RegisterUserDTO;
 import com.capstone.crmproject.entity.UserEntity;
 import com.capstone.crmproject.repository.UserRepository;
-import com.capstone.crmproject.dto.UserRole;
-import com.capstone.crmproject.repository.WorkspaceRepository;
+import com.capstone.crmproject.security.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Service
 @Slf4j
