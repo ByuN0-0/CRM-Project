@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -32,7 +33,7 @@ public class DealController {
             DealDTO dealDTO
     ) {
         // 1차로 유저가 workspace를 수정할 권한이 있는지
-        if (!workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
+        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
         DealEntity newDeal = dealService.addDealEntity(dealDTO);
         LocalDateTime date = newDeal.getCreateDate();
         return ResponseEntity.ok("{" + date.toString() + "}");
@@ -46,10 +47,22 @@ public class DealController {
             DealDTO dealDTO
     ) {
         // 1차로 유저가 workspace를 수정할 권한이 있는지
-        if (!workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
+        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
 
         DealEntity newDeal = dealService.updateDealEntity(dealDTO);
         LocalDateTime date = newDeal.getCreateDate();
         return ResponseEntity.ok("{" + date.toString() + "}");
+    }
+
+    @PostMapping("/api/workspace/{workspaceId}/deal/")
+    public ResponseEntity<String> getDeal(
+            @AuthenticationPrincipal UserDetails auth,
+            @PathVariable UUID workspaceId
+    ) {
+        // 1차로 유저가 workspace를 수정, 조회할 권한이 있는지
+        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
+
+        List<DealEntity> dealList = dealService.getDealList(workspaceId);
+        return ResponseEntity.ok("{" + dealList.toString() + "}");
     }
 }
