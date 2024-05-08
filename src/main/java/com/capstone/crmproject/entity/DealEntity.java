@@ -17,6 +17,7 @@ import java.util.UUID;
 @Entity
 public class DealEntity {
     @Id
+    private UUID id;
     private UUID workspaceId;
     private int companyId;
     @Enumerated(EnumType.STRING)

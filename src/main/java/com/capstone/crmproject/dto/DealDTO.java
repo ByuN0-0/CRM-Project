@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Getter
 public class DealDTO {
+    private UUID id;
     private UUID workspaceId;
     private int companyId;
     private InvestmentRound investmentRound;

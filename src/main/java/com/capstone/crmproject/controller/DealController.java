@@ -37,4 +37,19 @@ public class DealController {
         LocalDateTime date = newDeal.getCreateDate();
         return ResponseEntity.ok("{" + date.toString() + "}");
     }
+
+    @PostMapping("/api/workspace/{workspaceId}/deal/{dealId}/update")
+    public ResponseEntity<String> updateDeal(
+            @AuthenticationPrincipal UserDetails auth,
+            @PathVariable UUID workspaceId,
+            @PathVariable UUID dealId,
+            DealDTO dealDTO
+    ) {
+        // 1차로 유저가 workspace를 수정할 권한이 있는지
+        if (!workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
+
+        DealEntity newDeal = dealService.updateDealEntity(dealDTO);
+        LocalDateTime date = newDeal.getCreateDate();
+        return ResponseEntity.ok("{" + date.toString() + "}");
+    }
 }
