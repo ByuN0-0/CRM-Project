@@ -3,6 +3,7 @@ package com.capstone.crmproject.service;
 import com.capstone.crmproject.dto.DealDTO;
 import com.capstone.crmproject.entity.DealEntity;
 import com.capstone.crmproject.repository.DealRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +54,11 @@ public class DealService {
             throw new IllegalArgumentException("Can't find deal");
         }
         return dealEntityList;
+    }
+
+    public void deleteDealEntity(UUID dealId) {
+        Optional<DealEntity> optionalDeal = dealRepository.findById(dealId);
+        if (optionalDeal.isEmpty()) throw new EntityNotFoundException("Deal not found");
+        dealRepository.delete(optionalDeal.get());
     }
 }

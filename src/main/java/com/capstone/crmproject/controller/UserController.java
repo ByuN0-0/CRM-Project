@@ -8,10 +8,14 @@ import com.capstone.crmproject.request.UserRegisterRequest;
 import com.capstone.crmproject.service.UserService;
 import com.capstone.crmproject.service.WorkspaceMemberService;
 import com.capstone.crmproject.service.WorkspaceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "User", description = "유저 정보 관련")
 @Controller
 public class UserController {
 
@@ -26,11 +30,14 @@ public class UserController {
     }
 
 
+
     @GetMapping("/register")
     public String join() {
         return "join";
     }
 
+    @Operation(summary = "회원가입", description = "회원가입")
+    @Parameter(name = "registerUserDTO", description = "회원가입 정보")
     @PostMapping("/api/register")
     @ResponseBody
     public String registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
