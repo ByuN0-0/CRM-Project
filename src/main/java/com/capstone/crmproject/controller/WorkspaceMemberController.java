@@ -47,8 +47,8 @@ public class WorkspaceMemberController {
         }
     }
 
-    @Operation(summary = "멤버 조회", description = "멤버 삭제")
-    @Parameter(name = "workspaceId", description = "워크스페이스 ID, 멤버 정보")
+    @Operation(summary = "멤버 조회", description = "멤버 조회")
+    @Parameter(name = "workspaceId", description = "워크스페이스 ID")
     @PostMapping("/api/workspace/{workspaceId}/member")
     @ResponseBody
     public ResponseEntity<String> getMemberList(@AuthenticationPrincipal UserDetails auth, @PathVariable UUID workspaceId) {

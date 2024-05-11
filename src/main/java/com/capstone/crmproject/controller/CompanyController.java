@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,7 @@ public class CompanyController {
     }
 
     @Operation(summary = "회사 정보 수정", description = "회사 정보 수정")
-    @Parameter(name = "companyId, companyDTO", description = "회사 ID, 회사 정보")
+    @Parameter(name = "companyId", description = "회사 ID, 회사 정보")
     @PostMapping("/api/company/{companyId}/modify")
     @ResponseBody
     public String modifyCompanyInfo(
@@ -65,7 +66,7 @@ public class CompanyController {
 
         try {
             CompanyEntity newCompany = companyService.insertCompany(companyDTO);
-            return "Company added to workspace: " + newCompany.getCompanyName();
+            return "Company added to workspace: " + newCompany.getCompanyName() + " - " + newCompany.getCompanyId();
         } catch (Exception e) {
             return "add company failed";
         }
@@ -75,12 +76,13 @@ public class CompanyController {
     @Parameter(name = "companyId", description = "회사 ID")
     @PostMapping("/api/company/{companyId}")
     @ResponseBody
-    public String getCompany(@PathVariable UUID companyId, @RequestBody CompanyRequest companyRequest){
+    public ResponseEntity<String> getCompany(@PathVariable UUID companyId){
         try {
             CompanyEntity company = companyService.getCompany(companyId);
-            return "Company found: " + company.getCompanyName();
+            String message = "Company: " + company.getCompanyName() + " - " + company.getCompanyId();
+            return ResponseEntity.ok().body("{\"message\": \"" + message + "\"}");
         } catch (Exception e) {
-            return "Company not found";
+            return ResponseEntity.badRequest().body("{\"message\": \"find company failed\"}");
         }
     }
 }

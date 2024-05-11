@@ -11,6 +11,7 @@ import com.capstone.crmproject.service.WorkspaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -40,14 +41,19 @@ public class UserController {
     @Parameter(name = "registerUserDTO", description = "회원가입 정보")
     @PostMapping("/api/register")
     @ResponseBody
-    public String registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
+    public ResponseEntity<String> registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
         try {
             UserEntity newUser = userService.registerUser(registerUserDTO);
             WorkspaceEntity newWorkSpace = workspaceService.createWorkspace(registerUserDTO.getWorkspaceName(), newUser);
             WorkspaceMemberEntity newMember = workspaceMemberService.addMember(newWorkSpace.getWorkspaceId(), newUser.getUsername());
-            return "User registered with ID: " + newUser.getUsername() + ", Workspace created with Name: " + newWorkSpace.getName() + ", Member added to workspace: " + newMember.getMemberId();
+            JSONObject responseData = new JSONObject();
+
+            responseData.put("userId", newUser.getUsername());
+            responseData.put("workspaceId", newWorkSpace.getWorkspaceId());
+
+            return ResponseEntity.ok().body(responseData.toString());
         } catch (Exception e) {
-            return e.getMessage();
+            return ResponseEntity.badRequest().body("{\"message\": \"register failed\"}");
         }
     }
 }

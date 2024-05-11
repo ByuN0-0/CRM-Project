@@ -27,7 +27,7 @@ public class WorkspaceCompanyController {
     }
 
     @Operation(summary = "회사 조회", description = "회사 조회")
-    @Parameter(name = "workspaceId, companyRequest", description = "워크스페이스 ID, 회사 정보")
+    @Parameter(name = "workspaceId", description = "워크스페이스 ID, 회사 정보")
     @PostMapping("/api/workspace/{workspaceId}/company")
     @ResponseBody
     public ResponseEntity<String> findCompany(@PathVariable UUID workspaceId) {
