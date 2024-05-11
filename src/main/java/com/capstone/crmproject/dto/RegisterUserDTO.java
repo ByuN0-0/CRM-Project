@@ -5,7 +5,6 @@ import lombok.Getter;
 
 
 @Getter
-@Builder
 public class RegisterUserDTO {
     private String username;
     private String password;

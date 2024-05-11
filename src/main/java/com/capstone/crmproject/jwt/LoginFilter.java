@@ -1,6 +1,6 @@
 package com.capstone.crmproject.jwt;
 
-import com.capstone.crmproject.dto.CustomUserDetails;
+import com.capstone.crmproject.security.CustomUserDetails;
 import com.capstone.crmproject.dto.LoginDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -66,7 +66,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60*60*10L);
+        String token = jwtUtil.createJwt(username, role, 60*60*1000*10L);
 
         response.addHeader("Authorization", "Bearer " + token);
     }

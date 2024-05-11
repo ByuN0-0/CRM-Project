@@ -73,4 +73,8 @@ public class WorkspaceMemberService {
         workspaceMemberRepository.delete(workSpaceMember);
         return workspaceMemberRepository.save(workSpaceMember);
     }
+
+    public boolean isMember(UUID workspaceId, String username) {
+        return !workspaceMemberRepository.existsByWorkspaceIdAndMemberId(workspaceId, username);
+    }
 }

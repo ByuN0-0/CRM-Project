@@ -1,7 +1,7 @@
 package com.capstone.crmproject.controller;
 
 import com.capstone.crmproject.dto.CompanyDTO;
-import com.capstone.crmproject.dto.CustomUserDetails;
+import com.capstone.crmproject.security.CustomUserDetails;
 import com.capstone.crmproject.entity.CompanyEntity;
 import com.capstone.crmproject.request.CompanyRequest;
 import com.capstone.crmproject.service.CompanyService;
@@ -9,18 +9,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.repository.query.Param;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -34,26 +31,28 @@ public class CompanyController {
     }
 
     @Operation(summary = "회사 정보 수정", description = "회사 정보 수정")
-    @Parameter(name = "companyId, companyDTO", description = "회사 ID, 회사 정보")
+    @Parameter(name = "companyId", description = "회사 ID, 회사 정보")
     @PostMapping("/api/company/{companyId}/modify")
     @ResponseBody
-    public String modifyCompanyInfo(
+    public ResponseEntity<String> modifyCompanyInfo(
             @AuthenticationPrincipal CustomUserDetails auth,
             @PathVariable UUID companyId,
             @RequestBody CompanyDTO companyDTO
     ) {
         //UUID aceId = auth.getUserId();
-        var company = companyService.getCompany(companyId);
-        if (company == null) {
-            throw new EntityNotFoundException("Company not found");
-        } else {
-            try {
-                CompanyEntity newCompany = companyService.updateCompany(companyDTO);
-                return "Company update to workspace: " + newCompany.getCompanyName();
-            } catch (Exception e) {
-                return "update company failed";
-            }
+        CompanyEntity companyEntity;
+        JSONObject responseData = new JSONObject();
+        try {
+            companyEntity = companyService.updateCompany(companyDTO);
+        } catch (Exception e) {
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
         }
+        responseData.put("companyId", companyEntity.getCompanyId());
+        responseData.put("companyName", companyEntity.getCompanyName());
+
+        return ResponseEntity.ok().body(responseData.toString());
+
     }
 
 
@@ -61,31 +60,46 @@ public class CompanyController {
     @Parameter(name = "companyDTO", description = "회사 정보")
     @PostMapping("/api/company/add")
     @ResponseBody
-    public String addCompany(
+    public ResponseEntity<String> addCompany(
             @AuthenticationPrincipal CustomUserDetails auth,
             @RequestBody CompanyDTO companyDTO
     ) {
-
         //UUID id = auth.getWorkspaceId();
-
+        CompanyEntity newCompany;
+        JSONObject responseData = new JSONObject();
         try {
-            CompanyEntity newCompany = companyService.insertCompany(companyDTO);
-            return "Company added to workspace: " + newCompany.getCompanyName();
+            newCompany = companyService.insertCompany(companyDTO);
         } catch (Exception e) {
-            return "add company failed";
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
         }
+        JSONObject companyData = new JSONObject();
+        companyData.put("companyId", newCompany.getCompanyId());
+        companyData.put("companyName", newCompany.getCompanyName());
+        responseData.put("company", companyData);
+
+        return ResponseEntity.ok().body(responseData.toString());
     }
 
     @Operation(summary = "회사 정보 조회", description = "회사 정보 조회")
     @Parameter(name = "companyId", description = "회사 ID")
     @PostMapping("/api/company/{companyId}")
     @ResponseBody
-    public String getCompany(@PathVariable UUID companyId, @RequestBody CompanyRequest companyRequest){
+    public ResponseEntity<String> getCompany(@PathVariable UUID companyId) {
+        CompanyEntity companyEntity;
+        JSONObject responseData = new JSONObject();
         try {
-            CompanyEntity company = companyService.getCompany(companyId);
-            return "Company found: " + company.getCompanyName();
+            companyEntity = companyService.getCompany(companyId);
         } catch (Exception e) {
-            return "Company not found";
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
         }
+
+        JSONObject companyData = new JSONObject();
+        companyData.put("companyId", companyEntity.getCompanyId());
+        companyData.put("companyName", companyEntity.getCompanyName());
+        responseData.put("company", companyData);
+
+        return ResponseEntity.ok().body(responseData.toString());
     }
 }

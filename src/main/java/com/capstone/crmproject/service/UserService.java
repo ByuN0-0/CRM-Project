@@ -28,7 +28,7 @@ public class UserService {
     public UserEntity registerUser(RegisterUserDTO registerUserDTO) {
         //Todo
         if (userRepository.existsByUsername(registerUserDTO.getUsername())) {
-            throw new RuntimeException("Given user already exists");
+            throw new IllegalArgumentException("Given user already exists");
         }
 
         UserEntity user = new UserEntity();

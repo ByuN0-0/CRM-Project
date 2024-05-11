@@ -1,42 +1,45 @@
 package com.capstone.crmproject.controller;
 
-import com.capstone.crmproject.dto.CustomUserDetails;
 import com.capstone.crmproject.dto.WorkspaceDTO;
-import com.capstone.crmproject.entity.WorkspaceEntity;
 import com.capstone.crmproject.entity.WorkspaceMemberEntity;
 import com.capstone.crmproject.request.WorkspaceMemberRequest;
-import com.capstone.crmproject.request.WorkspaceRequest;
 import com.capstone.crmproject.service.WorkspaceMemberService;
 
 import com.capstone.crmproject.service.WorkspaceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
+@Tag(name = "WorkspaceMember", description = "워크스페이스 멤버 정보 관련")
 @Controller
 public class WorkspaceMemberController {
     private final WorkspaceMemberService workspaceMemberService;
     private final WorkspaceService workspaceService;
+
     public WorkspaceMemberController(WorkspaceMemberService workspaceMemberService, WorkspaceService workspaceService) {
         this.workspaceMemberService = workspaceMemberService;
         this.workspaceService = workspaceService;
     }
-    @PostMapping("/api/workspace/{workspaceId}/member")
+
+    @Operation(summary = "멤버 추가", description = "멤버 추가")
+    @Parameter(name = "workspaceId, memberId", description = "워크스페이스 ID, 멤버 정보")
+    @PostMapping("/api/workspace/{workspaceId}/add-member")
     @ResponseBody
-    public ResponseEntity<String> addMember(@RequestBody WorkspaceDTO workspaceDTO) {
-        UUID workspaceId = workspaceDTO.getWorkspaceId();
+    public ResponseEntity<String> addMember(@PathVariable UUID workspaceId, @RequestBody WorkspaceDTO workspaceDTO) {
         String memberId = workspaceDTO.getMemberId();
         try {
             WorkspaceMemberEntity workspaceMemberEntity = workspaceMemberService.addMember(workspaceId, memberId);
@@ -47,33 +50,45 @@ public class WorkspaceMemberController {
         }
     }
 
-    @PostMapping("/api/workspace/member")
+    @Operation(summary = "멤버 조회", description = "멤버 조회")
+    @Parameter(name = "workspaceId", description = "워크스페이스 ID")
+    @PostMapping("/api/workspace/{workspaceId}/member")
     @ResponseBody
-    public String getMemberList(@RequestBody WorkspaceMemberRequest workspaceMemberRequest) {
+    public ResponseEntity<String> getMemberList(@AuthenticationPrincipal UserDetails auth, @PathVariable UUID workspaceId) {
         try {
-            List<WorkspaceMemberEntity> workspaceMemberEntityList = workspaceMemberService.getMemberList(workspaceMemberRequest.getWorkspaceId());
-            return workspaceMemberEntityList.toString();
+            if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
+                return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
+            List<WorkspaceMemberEntity> workspaceMemberEntityList = workspaceMemberService.getMemberList(workspaceId);
+            StringBuilder returnString = new StringBuilder();
+            for (WorkspaceMemberEntity workspaceMemberEntity : workspaceMemberEntityList) {
+                returnString.append(workspaceMemberEntity.getMemberId()).append("\n");
+            }
+            return ResponseEntity.ok().body(returnString.toString());
         } catch (Exception e) {
-            return e.getMessage();
+            return ResponseEntity.badRequest().body("{\"message\": \"get member failed\"}");
         }
     }
 
+    @Operation(summary = "내 워크스페이스 목록 조회", description = "내 워크스페이스 목록 조회")
     @GetMapping("/api/my-workspace")
     @ResponseBody
-    public String getMyWorkspace(@AuthenticationPrincipal UserDetails auth) {
+    public ResponseEntity<String> getMyWorkspaceList(@AuthenticationPrincipal UserDetails auth) {
+        JSONObject responseData = new JSONObject();
         try {
             List<WorkspaceMemberEntity> workspaceMemberEntityList = workspaceMemberService.getWorkspaceList(auth.getUsername());
-            String returnString = "";
+            JSONArray workspaceList = new JSONArray();
             for (WorkspaceMemberEntity workspaceMemberEntity : workspaceMemberEntityList) {
-                String workspaceName = workspaceService.getWorkspace(workspaceMemberEntity.getWorkspaceId()).getName();
-                UUID workspaceId = workspaceMemberEntity.getWorkspaceId();
-                returnString += workspaceId.toString()+ " : " +workspaceName  + "\n";
-
-                log.info(workspaceId.toString());
+                JSONObject workspace = new JSONObject();
+                workspace.put("workspaceId", workspaceMemberEntity.getWorkspaceId());
+                workspace.put("workspaceName", workspaceService.getWorkspace(workspaceMemberEntity.getWorkspaceId()).getName());
+                workspaceList.put(workspace);
             }
-            return returnString;
+            responseData.put("workspaces", workspaceList);
+            return ResponseEntity.ok().body(responseData.toString());
         } catch (Exception e) {
-            return e.getMessage();
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
         }
     }
+
 }

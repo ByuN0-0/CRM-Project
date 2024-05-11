@@ -1,4 +1,4 @@
-package com.capstone.crmproject.config;
+package com.capstone.crmproject.security;
 
 import com.capstone.crmproject.jwt.JWTFilter;
 import com.capstone.crmproject.jwt.JWTUtil;
