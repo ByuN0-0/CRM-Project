@@ -1,12 +1,16 @@
 package com.capstone.crmproject.controller;
 
 import com.capstone.crmproject.dto.DealDTO;
+import com.capstone.crmproject.entity.CompanyEntity;
 import com.capstone.crmproject.entity.DealEntity;
+import com.capstone.crmproject.service.CompanyService;
 import com.capstone.crmproject.service.DealService;
 import com.capstone.crmproject.service.WorkspaceMemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,9 +29,12 @@ import java.util.UUID;
 public class DealController {
     private final DealService dealService;
     private final WorkspaceMemberService workspaceMemberService;
-    public DealController(DealService dealService, WorkspaceMemberService workspaceMemberService){
+    private final CompanyService companyService;
+
+    public DealController(DealService dealService, WorkspaceMemberService workspaceMemberService, CompanyService companyService) {
         this.dealService = dealService;
         this.workspaceMemberService = workspaceMemberService;
+        this.companyService = companyService;
 
     }
 
@@ -39,7 +46,8 @@ public class DealController {
             @PathVariable UUID workspaceId,
             DealDTO dealDTO
     ) {
-        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
+        if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
+            return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
         DealEntity newDeal = dealService.addDealEntity(dealDTO);
         LocalDateTime date = newDeal.getCreateDate();
         return ResponseEntity.ok("{" + date.toString() + "}");
@@ -54,7 +62,8 @@ public class DealController {
             @PathVariable UUID dealId,
             DealDTO dealDTO
     ) {
-        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
+        if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
+            return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
 
         DealEntity newDeal = dealService.updateDealEntity(dealDTO);
         LocalDateTime date = newDeal.getCreateDate();
@@ -68,10 +77,39 @@ public class DealController {
             @AuthenticationPrincipal UserDetails auth,
             @PathVariable UUID workspaceId
     ) {
-        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
+        JSONObject responseData = new JSONObject();
+        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) {
+            responseData.put("error", "User is not a member of this workspace");
+            return ResponseEntity.badRequest().body(responseData.toString());
+        }
+        try{
+            List<DealEntity> dealEntityList = dealService.getDealList(workspaceId);
+            JSONArray dealList = new JSONArray();
+            for (DealEntity dealEntity : dealEntityList) {
+                JSONObject deal = new JSONObject();
+                JSONObject company = new JSONObject();
+                CompanyEntity companyEntity = companyService.getCompany(dealEntity.getCompanyId());
 
-        List<DealEntity> dealList = dealService.getDealList(workspaceId);
-        return ResponseEntity.ok("{" + dealList.toString() + "}");
+                company.put("companyId", dealEntity.getCompanyId());
+                company.put("companyName", companyEntity.getCompanyName());
+
+                deal.put("dealId", dealEntity.getId());
+                deal.put("workspaceId", dealEntity.getWorkspaceId());
+                deal.put("company", company);
+                deal.put("Memo", dealEntity.getMemo());
+                deal.put("Email", dealEntity.getEmail());
+                deal.put("investmentRound", dealEntity.getInvestmentRound());
+                deal.put("createDate", dealEntity.getCreateDate());
+                deal.put("updateDate", dealEntity.getUpdateDate());
+                dealList.put(deal);
+            }
+            responseData.put("dealList", dealList);
+
+            return ResponseEntity.ok().body(responseData.toString());
+        } catch (Exception e) {
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
+        }
     }
 
     @Operation(summary = "딜 삭제", description = "딜 삭제")
@@ -82,9 +120,18 @@ public class DealController {
             @PathVariable UUID workspaceId,
             @PathVariable UUID dealId
     ) {
-        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
-
-        dealService.deleteDealEntity(dealId);
-        return ResponseEntity.ok("{\"message\": \"delete deal success\"}");
+        JSONObject responseData = new JSONObject();
+        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) {
+            responseData.put("error", "User is not a member of this workspace");
+            return ResponseEntity.badRequest().body(responseData.toString());
+        }
+        try {
+            dealService.deleteDealEntity(dealId);
+            responseData.put("message", "delete deal success");
+            return ResponseEntity.ok().body(responseData.toString());
+        } catch (Exception e) {
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
+        }
     }
 }

@@ -11,12 +11,15 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,19 +73,21 @@ public class WorkspaceMemberController {
     @GetMapping("/api/my-workspace")
     @ResponseBody
     public ResponseEntity<String> getMyWorkspaceList(@AuthenticationPrincipal UserDetails auth) {
+        JSONObject responseData = new JSONObject();
         try {
             List<WorkspaceMemberEntity> workspaceMemberEntityList = workspaceMemberService.getWorkspaceList(auth.getUsername());
-            StringBuilder returnString = new StringBuilder();
+            JSONArray workspaceList = new JSONArray();
             for (WorkspaceMemberEntity workspaceMemberEntity : workspaceMemberEntityList) {
-                String workspaceName = workspaceService.getWorkspace(workspaceMemberEntity.getWorkspaceId()).getName();
-                UUID workspaceId = workspaceMemberEntity.getWorkspaceId();
-                returnString.append(workspaceId.toString()).append(" : ").append(workspaceName).append("\n");
-
-                log.info(workspaceId.toString());
+                JSONObject workspace = new JSONObject();
+                workspace.put("workspaceId", workspaceMemberEntity.getWorkspaceId());
+                workspace.put("workspaceName", workspaceService.getWorkspace(workspaceMemberEntity.getWorkspaceId()).getName());
+                workspaceList.put(workspace);
             }
-            return ResponseEntity.ok().body(returnString.toString());
+            responseData.put("workspaces", workspaceList);
+            return ResponseEntity.ok().body(responseData.toString());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"message\": \"get workspace failed\"}");
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
         }
     }
 

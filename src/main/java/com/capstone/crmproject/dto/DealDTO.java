@@ -12,7 +12,7 @@ import java.util.UUID;
 public class DealDTO {
     private UUID id;
     private UUID workspaceId;
-    private int companyId;
+    private UUID companyId;
     private InvestmentRound investmentRound;
     private String phoneNumber;
     private String email;

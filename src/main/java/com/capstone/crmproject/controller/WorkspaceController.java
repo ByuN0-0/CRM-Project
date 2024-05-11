@@ -9,6 +9,7 @@ import com.capstone.crmproject.service.WorkspaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,12 +41,18 @@ public class WorkspaceController {
     @PostMapping("/api/workspace/{workspaceId}")
     @ResponseBody
     public ResponseEntity<String> getWorkspace(@AuthenticationPrincipal CustomUserDetails auth, @PathVariable UUID workspaceId) {
+        JSONObject responseData = new JSONObject();
         try {
             if(workspaceMemberService.isMember(workspaceId, auth.getUsername())) return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
             WorkspaceEntity workspace = workspaceService.getWorkspace(workspaceId);
-            return ResponseEntity.ok().body(workspace.getName()+ " - " + workspace.getOwnerId());
+            responseData.put("workspaceId", workspace.getWorkspaceId());
+            responseData.put("workspaceName", workspace.getName());
+            responseData.put("workspaceOwnerId", workspace.getOwnerId());
+            return ResponseEntity.ok().body(responseData.toString());
+
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"message\": \"get workspace failed\"}");
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
         }
     }
 }

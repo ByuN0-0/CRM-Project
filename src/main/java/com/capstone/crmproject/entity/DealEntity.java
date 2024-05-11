@@ -19,7 +19,7 @@ public class DealEntity {
     @Id
     private UUID id;
     private UUID workspaceId;
-    private int companyId;
+    private UUID companyId;
     @Enumerated(EnumType.STRING)
     private InvestmentRound investmentRound;
     private String phoneNumber;

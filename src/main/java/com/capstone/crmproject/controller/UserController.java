@@ -42,18 +42,20 @@ public class UserController {
     @PostMapping("/api/register")
     @ResponseBody
     public ResponseEntity<String> registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
+        JSONObject responseData = new JSONObject();
         try {
             UserEntity newUser = userService.registerUser(registerUserDTO);
             WorkspaceEntity newWorkSpace = workspaceService.createWorkspace(registerUserDTO.getWorkspaceName(), newUser);
             WorkspaceMemberEntity newMember = workspaceMemberService.addMember(newWorkSpace.getWorkspaceId(), newUser.getUsername());
-            JSONObject responseData = new JSONObject();
 
             responseData.put("userId", newUser.getUsername());
             responseData.put("workspaceId", newWorkSpace.getWorkspaceId());
 
             return ResponseEntity.ok().body(responseData.toString());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("{\"message\": \"register failed\"}");
+
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
         }
     }
 }
