@@ -63,7 +63,7 @@ public class DealController {
         if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
             return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
 
-        DealEntity newDeal = dealService.updateDealEntity(dealDTO);
+        DealEntity newDeal = dealService.updateDealEntity(dealId, dealDTO);
         LocalDateTime date = newDeal.getCreateDate();
         return ResponseEntity.ok("{" + date.toString() + "}");
     }

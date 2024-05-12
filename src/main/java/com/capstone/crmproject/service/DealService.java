@@ -34,8 +34,8 @@ public class DealService {
         return dealRepository.save(dealEntity);
     }
 
-    public DealEntity updateDealEntity(DealDTO dealDTO) {
-        Optional<DealEntity> optionalDeal= dealRepository.findById(dealDTO.getId());
+    public DealEntity updateDealEntity(UUID dealId, DealDTO dealDTO) {
+        Optional<DealEntity> optionalDeal= dealRepository.findById(dealId);
         if (optionalDeal.isEmpty()) throw new EntityNotFoundException("Deal not found");
         DealEntity deal = optionalDeal.get();
         deal.setCompanyId(dealDTO.getCompanyId());
