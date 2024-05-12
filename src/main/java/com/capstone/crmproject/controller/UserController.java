@@ -38,7 +38,6 @@ public class UserController {
     }
 
     @Operation(summary = "회원가입", description = "회원가입")
-    @Parameter(name = "registerUserDTO", description = "회원가입 정보")
     @PostMapping("/api/register")
     @ResponseBody
     public ResponseEntity<String> registerUser(@RequestBody RegisterUserDTO registerUserDTO) {

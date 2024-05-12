@@ -39,7 +39,6 @@ public class DealController {
     }
 
     @Operation(summary = "딜 추가", description = "딜 추가")
-    @Parameter(name = "workspaceId, dealDTO", description = "워크스페이스 ID, 딜 정보")
     @PostMapping("/api/workspace/{workspaceId}/deal/add")
     public ResponseEntity<String> addDeal(
             @AuthenticationPrincipal UserDetails auth,
@@ -54,7 +53,6 @@ public class DealController {
     }
 
     @Operation(summary = "딜 수정", description = "딜 수정")
-    @Parameter(name = "workspaceId, dealId, dealDTO", description = "워크스페이스 ID, 딜 ID, 딜 정보")
     @PostMapping("/api/workspace/{workspaceId}/deal/{dealId}/update")
     public ResponseEntity<String> updateDeal(
             @AuthenticationPrincipal UserDetails auth,
@@ -71,7 +69,6 @@ public class DealController {
     }
 
     @Operation(summary = "딜 조회", description = "딜 조회")
-    @Parameter(name = "workspaceId, dealId", description = "워크스페이스 ID, 딜 ID")
     @PostMapping("/api/workspace/{workspaceId}/deal/")
     public ResponseEntity<String> getDeal(
             @AuthenticationPrincipal UserDetails auth,
@@ -113,7 +110,6 @@ public class DealController {
     }
 
     @Operation(summary = "딜 삭제", description = "딜 삭제")
-    @Parameter(name = "workspaceId, dealId", description = "워크스페이스 ID, 딜 ID")
     @PostMapping("/api/workspace/{workspaceId}/deal/{dealId}/delete")
     public ResponseEntity<String> deleteDeal(
             @AuthenticationPrincipal UserDetails auth,

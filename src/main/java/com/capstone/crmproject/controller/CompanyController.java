@@ -57,7 +57,6 @@ public class CompanyController {
 
 
     @Operation(summary = "회사 정보 추가", description = "회사 정보 추가")
-    @Parameter(name = "companyDTO", description = "회사 정보")
     @PostMapping("/api/company/add")
     @ResponseBody
     public ResponseEntity<String> addCompany(
