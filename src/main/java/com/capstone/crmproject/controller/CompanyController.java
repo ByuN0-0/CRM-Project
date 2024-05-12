@@ -43,7 +43,7 @@ public class CompanyController {
         CompanyEntity companyEntity;
         JSONObject responseData = new JSONObject();
         try {
-            companyEntity = companyService.updateCompany(companyDTO);
+            companyEntity = companyService.updateCompany(companyId, companyDTO);
         } catch (Exception e) {
             responseData.put("error", e);
             return ResponseEntity.badRequest().body(responseData.toString());

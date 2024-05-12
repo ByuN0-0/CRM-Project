@@ -6,6 +6,5 @@ import java.util.UUID;
 
 @Getter
 public class CompanyDTO {
-    UUID companyId;
     String companyName;
 }

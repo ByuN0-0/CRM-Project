@@ -32,8 +32,8 @@ public class CompanyService {
     }
 
     @Transactional
-    public CompanyEntity updateCompany(CompanyDTO companyDTO) {
-        CompanyEntity companyEntity = companyRepository.findByCompanyId(companyDTO.getCompanyId());
+    public CompanyEntity updateCompany(UUID companyId, CompanyDTO companyDTO) {
+        CompanyEntity companyEntity = companyRepository.findByCompanyId(companyId);
         if (companyEntity == null) {
             throw new IllegalArgumentException("Can't find workspace");
         }
