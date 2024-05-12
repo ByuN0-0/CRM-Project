@@ -1,10 +1,7 @@
 package com.capstone.crmproject.entity;
 
 import com.capstone.crmproject.dto.InvestmentRound;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +14,7 @@ import java.util.UUID;
 @Entity
 public class DealEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private UUID workspaceId;
     private UUID companyId;

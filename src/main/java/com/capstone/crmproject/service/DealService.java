@@ -3,11 +3,9 @@ package com.capstone.crmproject.service;
 import com.capstone.crmproject.dto.DealDTO;
 import com.capstone.crmproject.entity.DealEntity;
 import com.capstone.crmproject.repository.DealRepository;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +20,7 @@ public class DealService {
     public DealEntity addDealEntity(DealDTO dealDTO){
         LocalDateTime date = LocalDateTime.now();
         DealEntity dealEntity = new DealEntity();
+        dealEntity.setWorkspaceId(dealDTO.getWorkspaceId());
         dealEntity.setCompanyId(dealDTO.getCompanyId());
         dealEntity.setMemo(dealDTO.getMemo());
         dealEntity.setCreateDate(date);
