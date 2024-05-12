@@ -30,6 +30,19 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
+    @Operation(summary = "회사 정보 조회", description = "회사 정보 조회")
+    @PostMapping("/api/company")
+    @ResponseBody
+    public ResponseEntity<String> getCompanyList() {
+        JSONObject responseData = new JSONObject();
+        try {
+            responseData.put("companyList", companyService.getCompanyList());
+        } catch (Exception e) {
+            responseData.put("error", e);
+            return ResponseEntity.badRequest().body(responseData.toString());
+        }
+        return ResponseEntity.ok().body(responseData.toString());
+    }
     @Operation(summary = "회사 정보 수정", description = "회사 정보 수정")
     @Parameter(name = "companyId", description = "회사 ID, 회사 정보")
     @PostMapping("/api/company/{companyId}/modify")

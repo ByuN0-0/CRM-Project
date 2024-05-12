@@ -40,4 +40,14 @@ public class CompanyService {
         companyEntity.setCompanyName(companyDTO.getCompanyName());
         return companyRepository.save(companyEntity);
     }
+
+    @Transactional
+    public void deleteCompany(UUID companyId) {
+        companyRepository.deleteById(companyId);
+    }
+
+    @Transactional
+    public Iterable<CompanyEntity> getCompanyList() {
+        return companyRepository.findAll();
+    }
 }
