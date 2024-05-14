@@ -11,12 +11,10 @@ import java.util.UUID;
 @Getter
 public class DealDTO {
     private UUID workspaceId;
-    private int companyId;
+    private UUID companyId;
     private InvestmentRound investmentRound;
     private String phoneNumber;
     private String email;
     private String memo;
-    private Date createDate;
-    private Date updateDate;
     private String customAttribute;
 }

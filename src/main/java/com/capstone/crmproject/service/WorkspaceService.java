@@ -37,6 +37,12 @@ public class WorkspaceService {
 
     @Transactional
     public WorkspaceEntity createWorkspace(String workspaceName, UserEntity userEntity) {
+        if (workspaceName == null || workspaceName.isEmpty()) {
+            throw new IllegalArgumentException("Workspace name is empty");
+        }
+        if (userEntity == null) {
+            throw new IllegalArgumentException("User is null");
+        }
         WorkspaceEntity workSpace = new WorkspaceEntity();
         workSpace.setName(workspaceName);
         workSpace.setOwnerId(userEntity.getUsername());

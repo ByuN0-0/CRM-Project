@@ -75,6 +75,6 @@ public class WorkspaceMemberService {
     }
 
     public boolean isMember(UUID workspaceId, String username) {
-        return workspaceMemberRepository.existsByWorkspaceIdAndUsername(workspaceId, username);
+        return !workspaceMemberRepository.existsByWorkspaceIdAndMemberId(workspaceId, username);
     }
 }
