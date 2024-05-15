@@ -31,7 +31,7 @@ ex:
 ```
 --
 ## 회원가입 (Register)
-### Endpoint: /api/registerProc
+### Endpoint: /api/register
 
 요청 방법
 POST 요청을 사용하여 새로운 사용자를 등록할 수 있습니다. 요청 본문에는 사용자 정보가 포함되어야 합니다.
@@ -58,7 +58,7 @@ Content-Type: application/json
 
 ---
 ## 로그인 (Login)
-### Endpoint: /api/loginProc
+### Endpoint: /login
 
 로그인을 위한 엔드포인트입니다. 사용자의 아이디와 비밀번호를 전송하여 로그인할 수 있습니다.
 
@@ -82,16 +82,7 @@ Content-Type: application/json
 - password: 사용자의 비밀번호를 나타내는 문자열입니다.
 - 
 응답:
-- 성공시 HTTP 상태 코드 200을 반환하고 "/" 루트 디렉토리를 리다이렉팅합니다.
-- 실패시 failureUrl("/login?error=true")을 반환합니다.
+- 성공시 HTTP 상태 코드 200을 반환하고 header에 jwt 토큰 발급
 
-csrf 설정을 위해 ```<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>``` 구문 추가
-```html
-<form action="/loginProc" method="post">
-    <input id="userName" type="text" name="username" placeholder="id"/>
-    <input id="password" type="password" name="password" placeholder="password"/>
-    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-    <input type="submit" value="login"/>
-</form>
-```
-요청을 위한 엔드포인트는 /api/loginProc입니다.
+
+요청을 위한 엔드포인트는 /login입니다.
