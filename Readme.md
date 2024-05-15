@@ -13,8 +13,6 @@ ex:
  fetch('/api/registerProc', {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': token,
-                'X-CSRF-HEADER': header,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
