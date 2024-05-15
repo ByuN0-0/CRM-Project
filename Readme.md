@@ -1,13 +1,13 @@
 # API 요청 가이드
 이 README 파일은 프론트엔드 개발자들을 위한 백엔드 API 요청 가이드입니다. 아래에는 백엔드에서 제공하는 API 엔드포인트에 대한 설명과 요청하는 방법이 포함되어 있습니다.
 
-csrf 설정을 위해 html 헤더에 아래 구문 추가
-```html
-<meta name="_csrf" content="{{_csrf.token}}"/>  
-<meta name="_csrf_header" content="{{_csrf.headerName}}"/>  
-```
-fetch요청 시  
-header에 { 'X-CSRF-TOKEN': token, 'X-CSRF-HEADER': header, } 추가  
+~~csrf 설정을 위해 html 헤더에 아래 구문 추가~~
+
+~~<meta name="_csrf" content="{{_csrf.token}}"/>~~
+~~<meta name="_csrf_header" content="{{_csrf.headerName}}"/>~~ 
+
+~~fetch요청 시~~
+~~header에 { 'X-CSRF-TOKEN': token, 'X-CSRF-HEADER': header, } 추가~~
 ```html
 ex:  
  fetch('/api/registerProc', {
