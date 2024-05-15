@@ -1,0 +1,29 @@
+header{
+    top :0px;
+    width: 100%;
+    height: 150px;
+    background-color: black;
+    color:white;
+    text-align: center;
+    line-height: 150px;
+    font-size: 30px;
+}
+
+footer{
+    
+    width: 100%;
+    height: 150px;
+    bottom: 0px;
+    background-color: black;
+    text-align: center;
+    line-height: 150px;
+    font-size: 30px;
+}
+
+.signInbtn{
+    background-color: white;
+    width: 150px;
+    height: 50px;
+    margin-top: 30px;
+    border-radius: 50px;
+}
