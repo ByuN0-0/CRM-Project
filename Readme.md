@@ -44,14 +44,12 @@ Content-Type: application/json
 {  
     "userName": "사용자 아이디",  
     "password": "비밀번호",  
-    "userNick": "사용자 이름",
     "workSpaceName: "워크스페이스 이름"
 }  
 ```
 요청 본문 설명
 - userName: 사용자의 아이디를 나타내는 문자열입니다.
 - password: 사용자의 비밀번호를 나타내는 문자열입니다.
-- userNick: 사용자의 이름을 나타내는 문자열입니다.
 - workSpaceName: 사용자가 생성할 워크스페이스 이름을 나타내는 문자열입니다.
 
 응답
