@@ -25,7 +25,7 @@ public class DealService {
         dealEntity.setMemo(dealDTO.getMemo());
         dealEntity.setCreateDate(date);
         dealEntity.setUpdateDate(date);
-        dealEntity.setInvestmentRound(dealDTO.getInvestmentRound());
+        dealEntity.setRound(dealDTO.getRound());
         dealEntity.setEmail(dealDTO.getEmail());
         dealEntity.setPhoneNumber(dealDTO.getEmail());
         dealEntity.setCustomAttribute(dealDTO.getCustomAttribute());
@@ -40,7 +40,7 @@ public class DealService {
         deal.setCompanyId(dealDTO.getCompanyId());
         deal.setMemo(dealDTO.getMemo());
         deal.setUpdateDate(LocalDateTime.now());
-        deal.setInvestmentRound(dealDTO.getInvestmentRound());
+        deal.setRound(dealDTO.getRound());
         deal.setEmail(dealDTO.getEmail());
         deal.setPhoneNumber(dealDTO.getPhoneNumber());
         deal.setCustomAttribute(dealDTO.getCustomAttribute());

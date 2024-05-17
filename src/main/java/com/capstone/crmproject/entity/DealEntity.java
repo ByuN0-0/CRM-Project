@@ -1,6 +1,6 @@
 package com.capstone.crmproject.entity;
 
-import com.capstone.crmproject.dto.InvestmentRound;
+import com.capstone.crmproject.dto.Round;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +19,7 @@ public class DealEntity {
     private UUID workspaceId;
     private UUID companyId;
     @Enumerated(EnumType.STRING)
-    private InvestmentRound investmentRound;
+    private Round round;
     private String phoneNumber;
     private String email;
     private String memo;

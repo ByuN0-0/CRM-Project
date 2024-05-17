@@ -97,7 +97,7 @@ public class DealController {
                 deal.put("company", company);
                 deal.put("Memo", dealEntity.getMemo());
                 deal.put("Email", dealEntity.getEmail());
-                deal.put("investmentRound", dealEntity.getInvestmentRound());
+                deal.put("investmentRound", dealEntity.getRound());
                 deal.put("createDate", dealEntity.getCreateDate());
                 deal.put("updateDate", dealEntity.getUpdateDate());
                 deal.put("phoneNumber", dealEntity.getPhoneNumber());
