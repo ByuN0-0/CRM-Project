@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+</head>
+<body>
+<h2>회원가입</h2>
+<form action="/api/register" method="post">
+    <label for="userId">ID:</label><br>
+    <input type="text" id="userId" name="userId" required><br>
+    <label for="password">비밀번호:</label><br>
+    <input type="password" id="password" name="password" required><br>
+    <label for="name">이름:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+    <input type="submit" value="가입하기">
+</form>
+</body>
+</html>
