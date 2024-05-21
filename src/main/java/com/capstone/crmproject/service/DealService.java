@@ -42,7 +42,7 @@ public class DealService {
         deal.setUpdateDate(LocalDateTime.now());
         deal.setInvestmentRound(dealDTO.getInvestmentRound());
         deal.setEmail(dealDTO.getEmail());
-        deal.setPhoneNumber(dealDTO.getEmail());
+        deal.setPhoneNumber(dealDTO.getPhoneNumber());
         deal.setCustomAttribute(dealDTO.getCustomAttribute());
         return dealRepository.save(deal);
     }

@@ -100,6 +100,8 @@ public class DealController {
                 deal.put("investmentRound", dealEntity.getInvestmentRound());
                 deal.put("createDate", dealEntity.getCreateDate());
                 deal.put("updateDate", dealEntity.getUpdateDate());
+                deal.put("phoneNumber", dealEntity.getPhoneNumber());
+                deal.put("customAttribute", dealEntity.getCustomAttribute());
                 dealList.put(deal);
             }
             responseData.put("dealList", dealList);
