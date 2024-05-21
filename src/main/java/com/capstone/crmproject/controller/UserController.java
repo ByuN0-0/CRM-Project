@@ -3,13 +3,11 @@ package com.capstone.crmproject.controller;
 import com.capstone.crmproject.dto.RegisterUserDTO;
 import com.capstone.crmproject.entity.UserEntity;
 import com.capstone.crmproject.entity.WorkspaceEntity;
-import com.capstone.crmproject.entity.WorkspaceMemberEntity;
-import com.capstone.crmproject.request.UserRegisterRequest;
+import com.capstone.crmproject.entity.WorkspaceMember;
 import com.capstone.crmproject.service.UserService;
 import com.capstone.crmproject.service.WorkspaceMemberService;
 import com.capstone.crmproject.service.WorkspaceService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +43,7 @@ public class UserController {
         try {
             UserEntity newUser = userService.registerUser(registerUserDTO);
             WorkspaceEntity newWorkSpace = workspaceService.createWorkspace(registerUserDTO.getWorkspaceName(), newUser);
-            WorkspaceMemberEntity newMember = workspaceMemberService.addMember(newWorkSpace.getWorkspaceId(), newUser.getUsername());
+            WorkspaceMember newMember = workspaceMemberService.addMember(newWorkSpace.getWorkspaceId(), newUser.getUsername());
 
             responseData.put("userId", newUser.getUsername());
             responseData.put("workspaceId", newWorkSpace.getWorkspaceId());

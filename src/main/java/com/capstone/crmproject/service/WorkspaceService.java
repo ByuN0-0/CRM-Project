@@ -3,18 +3,12 @@ package com.capstone.crmproject.service;
 
 import com.capstone.crmproject.entity.UserEntity;
 import com.capstone.crmproject.entity.WorkspaceEntity;
-import com.capstone.crmproject.entity.WorkspaceMemberEntity;
-import com.capstone.crmproject.repository.WorkspaceMemberRepository;
 import com.capstone.crmproject.repository.WorkspaceRepository;
 
-import com.capstone.crmproject.request.UserRegisterRequest;
-import com.capstone.crmproject.request.WorkspaceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service

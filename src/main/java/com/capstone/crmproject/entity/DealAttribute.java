@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import java.util.UUID;
 
 @Entity
-public class DealAttributeEntity {
+public class DealAttribute {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID attributeId;

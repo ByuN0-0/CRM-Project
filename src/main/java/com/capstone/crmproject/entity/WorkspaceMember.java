@@ -5,7 +5,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @IdClass(WorkspaceMemberId.class)
-public class WorkspaceMemberEntity {
+public class WorkspaceMember {
 
     @Id
     @Column(name = "workspace_id")

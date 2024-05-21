@@ -1,19 +1,15 @@
 package com.capstone.crmproject.controller;
 
-import com.capstone.crmproject.entity.WorkspaceCompanyEntity;
-import com.capstone.crmproject.request.CompanyRequest;
+import com.capstone.crmproject.entity.WorkspaceCompany;
 import com.capstone.crmproject.service.WorkspaceCompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -38,8 +34,8 @@ public class WorkspaceCompanyController {
         JSONObject responseData = new JSONObject();
         try {
             List<UUID> companiesIdList = new ArrayList<>();
-            List<WorkspaceCompanyEntity> companies = workspaceCompanyService.getCompanyList(workspaceId);
-            for (WorkspaceCompanyEntity company : companies) {
+            List<WorkspaceCompany> companies = workspaceCompanyService.getCompanyList(workspaceId);
+            for (WorkspaceCompany company : companies) {
                 companiesIdList.add(company.getCompanyId());
             }
             responseData.put("companies", companiesIdList);

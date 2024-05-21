@@ -2,7 +2,7 @@ package com.capstone.crmproject.controller;
 
 import com.capstone.crmproject.dto.DealDTO;
 import com.capstone.crmproject.entity.CompanyEntity;
-import com.capstone.crmproject.entity.DealEntity;
+import com.capstone.crmproject.entity.DealWorkspace;
 import com.capstone.crmproject.service.CompanyService;
 import com.capstone.crmproject.service.DealService;
 import com.capstone.crmproject.service.WorkspaceMemberService;
@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +47,7 @@ public class DealController {
         if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
             return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
 
-        DealEntity newDeal = dealService.addDealEntity(workspaceId);
+        DealWorkspace newDeal = dealService.addDealEntity(workspaceId);
         dealService.initValue(newDeal.getDealId());
         return ResponseEntity.ok("{" + date.toString() + "}");
     }
@@ -65,7 +64,7 @@ public class DealController {
         if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
             return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
 
-        DealEntity newDeal = dealService.updateDealEntity(dealId, dealDTO);
+        DealWorkspace newDeal = dealService.updateDealEntity(dealId, dealDTO);
         LocalDateTime date = newDeal.getCreateDate();
         return ResponseEntity.ok("{" + date.toString() + "}");
     }
@@ -83,9 +82,9 @@ public class DealController {
             return ResponseEntity.badRequest().body(responseData.toString());
         }
         try{
-            List<DealEntity> dealEntityList = dealService.getDealList(workspaceId);
+            List<DealWorkspace> dealEntityList = dealService.getDealList(workspaceId);
             JSONArray dealList = new JSONArray();
-            for (DealEntity dealEntity : dealEntityList) {
+            for (DealWorkspace dealEntity : dealEntityList) {
                 JSONObject deal = new JSONObject();
                 JSONObject company = new JSONObject();
                 CompanyEntity companyEntity = companyService.getCompany(dealEntity.getCompanyId());

@@ -1,7 +1,7 @@
 package com.capstone.crmproject.controller;
 
 import com.capstone.crmproject.dto.WorkspaceDTO;
-import com.capstone.crmproject.entity.WorkspaceMemberEntity;
+import com.capstone.crmproject.entity.WorkspaceMember;
 import com.capstone.crmproject.service.WorkspaceMemberService;
 
 import com.capstone.crmproject.service.WorkspaceService;
@@ -39,7 +39,7 @@ public class WorkspaceMemberController {
     public ResponseEntity<String> addMember(@PathVariable UUID workspaceId, @RequestBody WorkspaceDTO workspaceDTO) {
         String memberId = workspaceDTO.getMemberId();
         try {
-            WorkspaceMemberEntity workspaceMemberEntity = workspaceMemberService.addMember(workspaceId, memberId);
+            WorkspaceMember workspaceMemberEntity = workspaceMemberService.addMember(workspaceId, memberId);
             String message = "Member added to workspace: " + workspaceMemberEntity.getMemberId();
             return ResponseEntity.ok().body("{\"message\": \"" + message + "\"}");
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class WorkspaceMemberController {
     public ResponseEntity<String> getMemberList(@AuthenticationPrincipal UserDetails auth, @PathVariable UUID workspaceId) {
         JSONObject responseData = new JSONObject();
         JSONArray members = new JSONArray();
-        List<WorkspaceMemberEntity> workspaceMemberEntityList;
+        List<WorkspaceMember> workspaceMemberEntityList;
         try {
             if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
                 return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
@@ -62,7 +62,7 @@ public class WorkspaceMemberController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("{\"message\": \"get member failed\"}");
         }
-        for (WorkspaceMemberEntity workspaceMemberEntity : workspaceMemberEntityList) {
+        for (WorkspaceMember workspaceMemberEntity : workspaceMemberEntityList) {
             JSONObject member = new JSONObject();
             member.put("memberId", workspaceMemberEntity.getMemberId());
             members.put(member);
@@ -77,9 +77,9 @@ public class WorkspaceMemberController {
     public ResponseEntity<String> getMyWorkspaceList(@AuthenticationPrincipal UserDetails auth) {
         JSONObject responseData = new JSONObject();
         try {
-            List<WorkspaceMemberEntity> workspaceMemberEntityList = workspaceMemberService.getWorkspaceList(auth.getUsername());
+            List<WorkspaceMember> workspaceMemberEntityList = workspaceMemberService.getWorkspaceList(auth.getUsername());
             JSONArray workspaceList = new JSONArray();
-            for (WorkspaceMemberEntity workspaceMemberEntity : workspaceMemberEntityList) {
+            for (WorkspaceMember workspaceMemberEntity : workspaceMemberEntityList) {
                 JSONObject workspace = new JSONObject();
                 workspace.put("workspaceId", workspaceMemberEntity.getWorkspaceId());
                 workspace.put("workspaceName", workspaceService.getWorkspace(workspaceMemberEntity.getWorkspaceId()).getName());

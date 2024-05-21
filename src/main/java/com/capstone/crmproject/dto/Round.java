@@ -1,6 +1,6 @@
 package com.capstone.crmproject.dto;
 
-public enum InvestmentRound {
+public enum Round {
     SEED,
     SERIES_A,
     SERIES_B,

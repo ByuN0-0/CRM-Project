@@ -1,12 +1,13 @@
 package com.capstone.crmproject.service;
 
 import com.capstone.crmproject.dto.DealDTO;
-import com.capstone.crmproject.entity.DealEntity;
+import com.capstone.crmproject.entity.DealWorkspace;
+import com.capstone.crmproject.repository.DealAttributeRepository;
 import com.capstone.crmproject.repository.DealRepository;
+import com.capstone.crmproject.repository.DealValueRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,23 +15,27 @@ import java.util.UUID;
 @Service
 public class DealService {
     private final DealRepository dealRepository;
-    public DealService(DealRepository dealRepository){
+    private final DealValueRepository dealValueRepository;
+    private final DealAttributeRepository dealAttributeRepository;
+    public DealService(DealRepository dealRepository, DealValueRepository dealValueRepository, DealAttributeRepository dealAttributeRepository){
         this.dealRepository = dealRepository;
+        this.dealValueRepository = dealValueRepository;
+        this.dealAttributeRepository = dealAttributeRepository;
     }
-    public DealEntity addDealEntity(UUID workspaceId){
-        DealEntity newDeal = new DealEntity();
+    public DealWorkspace addDealEntity(UUID workspaceId){
+        DealWorkspace newDeal = new DealWorkspace();
         newDeal.setWorkspaceId(workspaceId);
         return dealRepository.save(newDeal);
     }
 
-    public DealEntity updateDealEntity(UUID dealId, DealDTO dealDTO) {
-        Optional<DealEntity> optionalDeal= dealRepository.findById(dealId);
+    public DealWorkspace updateDealEntity(UUID dealId, DealDTO dealDTO) {
+        Optional<DealWorkspace> optionalDeal= dealRepository.findById(dealId);
         if (optionalDeal.isEmpty()) throw new EntityNotFoundException("Deal not found");
 
     }
 
-    public List<DealEntity> getDealList(UUID workspaceId) {
-        List<DealEntity> dealEntityList = dealRepository.findByWorkspaceId(workspaceId);
+    public List<DealWorkspace> getDealList(UUID workspaceId) {
+        List<DealWorkspace> dealEntityList = dealRepository.findByWorkspaceId(workspaceId);
         if (dealEntityList == null) {
             throw new IllegalArgumentException("Can't find deal");
         }
@@ -38,12 +43,12 @@ public class DealService {
     }
 
     public void deleteDealEntity(UUID dealId) {
-        Optional<DealEntity> optionalDeal = dealRepository.findById(dealId);
+        Optional<DealWorkspace> optionalDeal = dealRepository.findById(dealId);
         if (optionalDeal.isEmpty()) throw new EntityNotFoundException("Deal not found");
         dealRepository.delete(optionalDeal.get());
     }
 
-    public void initValue(DealEntity deal){
-
+    public void initValue(UUID dealId){
+        deal
     }
 }

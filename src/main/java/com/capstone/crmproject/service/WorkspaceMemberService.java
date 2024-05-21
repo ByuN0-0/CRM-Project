@@ -1,7 +1,7 @@
 package com.capstone.crmproject.service;
 
 import com.capstone.crmproject.entity.WorkspaceEntity;
-import com.capstone.crmproject.entity.WorkspaceMemberEntity;
+import com.capstone.crmproject.entity.WorkspaceMember;
 import com.capstone.crmproject.repository.WorkspaceMemberRepository;
 import com.capstone.crmproject.repository.WorkspaceRepository;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,9 @@ public class WorkspaceMemberService {
     }
 
     @Transactional
-    public List<WorkspaceMemberEntity> getMemberList(UUID workspaceId) {
+    public List<WorkspaceMember> getMemberList(UUID workspaceId) {
         // 멤버의 이름과 오너만 매개변수로 넣어서 리턴
-        List<WorkspaceMemberEntity> memberList = workspaceMemberRepository.findByWorkspaceId(workspaceId);
+        List<WorkspaceMember> memberList = workspaceMemberRepository.findByWorkspaceId(workspaceId);
 
         if (memberList == null) {
             throw new IllegalArgumentException("Can't find workspace member");
@@ -32,9 +32,9 @@ public class WorkspaceMemberService {
     }
 
     @Transactional
-    public List<WorkspaceMemberEntity> getWorkspaceList(String memberId) {
+    public List<WorkspaceMember> getWorkspaceList(String memberId) {
         // 멤버의 이름과 오너만 매개변수로 넣어서 리턴
-        List<WorkspaceMemberEntity> workspaceList = workspaceMemberRepository.findByMemberId(memberId);
+        List<WorkspaceMember> workspaceList = workspaceMemberRepository.findByMemberId(memberId);
 
         if (workspaceList == null) {
             throw new IllegalArgumentException("Can't find workspace");
@@ -43,13 +43,13 @@ public class WorkspaceMemberService {
     }
 
     @Transactional
-    public WorkspaceMemberEntity addMember(UUID workspaceId, String memberId) {
+    public WorkspaceMember addMember(UUID workspaceId, String memberId) {
         // 멤버의 이름과 오너만 매개변수로 넣어서 리턴
         WorkspaceEntity workspaceEntity = workSpaceRepository.findByWorkspaceId(workspaceId);
         if (workspaceEntity == null) {
             throw new IllegalArgumentException("Can't find workspace");
         }
-        WorkspaceMemberEntity workspaceMember = new WorkspaceMemberEntity();
+        WorkspaceMember workspaceMember = new WorkspaceMember();
         workspaceMember.setWorkspaceId(workspaceId);
         workspaceMember.setMemberId(memberId);
         if (workspaceMemberRepository.findByWorkspaceIdAndMemberId(workspaceId, memberId) != null) {
@@ -59,14 +59,14 @@ public class WorkspaceMemberService {
     }
 
     @Transactional
-    public WorkspaceMemberEntity removeMember(UUID workspaceId, String memberId) {
+    public WorkspaceMember removeMember(UUID workspaceId, String memberId) {
         // 멤버의 이름과 오너만 매개변수로 넣어서 리턴
         WorkspaceEntity workSpaceEntity = workSpaceRepository.findByWorkspaceId(workspaceId);
 
         if (workSpaceEntity == null) {
             throw new IllegalArgumentException("Can't find workspace");
         }
-        WorkspaceMemberEntity workSpaceMember = workspaceMemberRepository.findByWorkspaceIdAndMemberId(workspaceId, memberId);
+        WorkspaceMember workSpaceMember = workspaceMemberRepository.findByWorkspaceIdAndMemberId(workspaceId, memberId);
         if (workSpaceMember == null) {
             throw new IllegalArgumentException("Can't find workspace member");
         }

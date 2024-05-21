@@ -1,6 +1,5 @@
 package com.capstone.crmproject.controller;
 
-import com.capstone.crmproject.entity.WorkspaceMemberEntity;
 import com.capstone.crmproject.security.CustomUserDetails;
 import com.capstone.crmproject.entity.WorkspaceEntity;
 import com.capstone.crmproject.service.UserService;
@@ -12,14 +11,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
 import java.util.UUID;
 
 @Tag(name = "Workspace", description = "워크스페이스 정보 관련")
