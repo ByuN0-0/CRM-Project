@@ -1,0 +1,281 @@
+[33mcommit a0ce1a2eb9a5c1aba3d3259f80578cb9ccce839f[m[33m ([m[1;36mHEAD -> [m[1;32mbackend[m[33m)[m
+Merge: 9796a3c d12806d
+Author: isly7959 <isly7959@naver.com>
+Date:   Tue May 21 12:04:55 2024 +0900
+
+    Merge branch 'main' of https://github.com/ByuN0-0/CRM-Project into backend
+
+[33mcommit d12806d33d14f5baa82b13eaf7e289bd2bde65ee[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Fri May 17 16:07:47 2024 +0900
+
+    modify InvestmentRound -> Round
+
+[33mcommit a9af04ed5dc36c09bd55c976a0be124278ae1954[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Wed May 15 22:12:35 2024 +0900
+
+    Update Readme.md
+
+[33mcommit 04cc2903b13853b4a3e0199b13ef29699c9d4ffd[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Wed May 15 22:12:09 2024 +0900
+
+    Update Readme.md
+
+[33mcommit b0ea213a1626be37691f67f4abfc9f17b7817efe[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Wed May 15 22:10:53 2024 +0900
+
+    Update Readme.md
+
+[33mcommit e3e57456f25f2e7d68a91451eb1a036fd8f071d9[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Wed May 15 22:08:32 2024 +0900
+
+    Update Readme.md
+
+[33mcommit 9796a3ccaf8de469f695cc606321943342dfc4f4[m
+Merge: 0008598 7ac61e8
+Author: isly7959 <isly7959@naver.com>
+Date:   Tue May 14 16:09:05 2024 +0900
+
+    Merge branch 'backend' of https://github.com/ByuN0-0/CRM-Project into backend
+
+[33mcommit 4d1215eaeb9f7a342b3117730b6ee2470580cdec[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun May 12 14:39:37 2024 +0900
+
+    fix update deal method
+
+[33mcommit 7ac61e8882a4bfa58936c91683e4e9cb7509ad46[m[33m ([m[1;31morigin/backend[m[33m)[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun May 12 14:16:12 2024 +0900
+
+    Add getCompanyInfo method
+
+[33mcommit 81e7119e6b7e59fbee4aa0d0b6e9d3f209476e46[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun May 12 14:08:46 2024 +0900
+
+    Modify CompanyDTO (remove Id)
+
+[33mcommit 221cbb50171f440e249680bcd35fea7fa3f07118[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun May 12 12:58:02 2024 +0900
+
+    Update return type value String to JSONObject
+
+[33mcommit 6a0dcd77e3c04d818b41772688f04527b3c17185[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun May 12 11:47:32 2024 +0900
+
+    Remove DealDTO (dealId, createdate, updatedate)
+
+[33mcommit c0df4cf63cc2dfc835b791669bdcd82ea0ba633a[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun May 12 11:07:02 2024 +0900
+
+    Modify api description
+
+[33mcommit fd2e5a6c22f39ed15e08c2a2c5612ae645d37a9c[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun May 12 00:30:52 2024 +0900
+
+    delete trash directory
+
+[33mcommit f2cc56b9575fe82deb8be8d1ad880490e22a654a[m
+Merge: 9c33b56 ed2b159
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun May 12 00:25:26 2024 +0900
+
+    Merge branch 'backend'
+
+[33mcommit ed2b159004a148bfb2c8c9ccfad544ea54fe9729[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun May 12 00:24:48 2024 +0900
+
+    Update return type value String to JSONObject
+
+[33mcommit 154e362582073600a7a9f7c49dca33474958e564[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sat May 11 21:37:57 2024 +0900
+
+    Added Docker integration for improved containerization.
+
+[33mcommit 07829fea801d821aa896c2cdb972c0a75a1f0d60[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Wed May 8 21:10:19 2024 +0900
+
+    add api describtion
+
+[33mcommit e1ccca12c4245d0cf92cfd9bdac7a5ad1189bb0e[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Wed May 8 10:41:51 2024 +0900
+
+    create getDealList method
+
+[33mcommit 954709f159d7502c7c4917f1e34d79a00d7b3218[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Wed May 8 10:31:32 2024 +0900
+
+    create updateDeal method
+
+[33mcommit 000859879c64120fb9359fe0c41e2c79d12cb831[m
+Author: isly7959 <isly7959@naver.com>
+Date:   Tue May 7 17:24:12 2024 +0900
+
+    moved UserRole dto to security package
+
+[33mcommit b94f2fc870c6f19816dbf2a0c8c54ed6dd6d55cc[m
+Author: isly7959 <isly7959@naver.com>
+Date:   Tue May 7 17:21:21 2024 +0900
+
+    add security package
+
+[33mcommit 6586612a95def82273b2098d5fd162290310deb1[m
+Author: isly7959 <isly7959@naver.com>
+Date:   Tue May 7 17:16:23 2024 +0900
+
+    Add Deal Add logic
+
+[33mcommit fc42a32842ff6a09b48558b235e29d42971ada1e[m
+Author: isly7959 <isly7959@naver.com>
+Date:   Tue May 7 16:22:30 2024 +0900
+
+    remove Unnecessary Builder Annotation
+
+[33mcommit 4346de7ec5b27cf5204c987ac95121ef34705891[m
+Merge: 5ca0097 5be9ee9
+Author: isly7959 <isly7959@naver.com>
+Date:   Tue May 7 16:10:39 2024 +0900
+
+    Merge branch 'backend' of https://github.com/ByuN0-0/CRM-Project into backend
+
+[33mcommit 5ca00977a4869970c820e790c34c1f92e34349ff[m
+Merge: 6bed86d 05e9b7c
+Author: isly7959 <isly7959@naver.com>
+Date:   Tue May 7 16:06:33 2024 +0900
+
+    Merge branch 'main' of https://github.com/ByuN0-0/CRM-Project into backend
+
+[33mcommit 9c33b5600a97d78bf5fb685b24136b324f03e1ad[m
+Merge: 8b921d0 5be9ee9
+Author: BiYeon <isly7959@naver.com>
+Date:   Tue May 7 11:57:18 2024 +0900
+
+    Merge branch 'backend'
+
+[33mcommit 5be9ee97d4e715152030ce28b1c0da0a6c7875c7[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Tue May 7 11:56:11 2024 +0900
+
+    update database (mongodb -> mysql)
+
+[33mcommit 717368d56d97b1d0dec5f7579e9fe15997afdb4e[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Wed Apr 24 21:39:02 2024 +0900
+
+    add company crud logic
+
+[33mcommit f0eab4c682fc13d398e90f17b8c40dafcbb7d560[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Fri Apr 19 15:20:57 2024 +0900
+
+    modify controller-service-repository logic
+
+[33mcommit 2f40e36a15d937fc43033d0e31dc13ab63bd8d1a[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Thu Apr 18 03:42:44 2024 +0900
+
+    refactor: getter and setter methods to use builder pattern
+
+[33mcommit 6bed86d469fba486ff22850956f42a8fd7673461[m
+Author: isly7959 <isly7959@naver.com>
+Date:   Wed Apr 17 16:07:49 2024 +0900
+
+    Modify user,workspace Controller - Service logic
+
+[33mcommit 05e9b7c16d030d58cd76e7d92ec3cb64dd38b1f7[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Sun Apr 14 23:21:00 2024 +0900
+
+    Update Readme.md
+
+[33mcommit fb5310b752510f5f56303ac48800eef4b95d22be[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Sun Apr 14 23:15:17 2024 +0900
+
+    Update Readme.md
+
+[33mcommit 9caffacd024c6aab106383a6e4b69d1ae534b559[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Sun Apr 14 23:14:25 2024 +0900
+
+    Update Readme.md
+
+[33mcommit 871db3249cf29b5854c80c9a23066fd79411f803[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Sun Apr 14 23:13:29 2024 +0900
+
+    Update Readme.md
+
+[33mcommit 3dcb83db6f52bee52bdfb455e0649c005d43a6fa[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Sun Apr 14 23:11:53 2024 +0900
+
+    Update Readme.md
+
+[33mcommit 217dc95e83d55d304187056fd4b92b129f210e19[m
+Author: BiYeon <54989406+ByuN0-0@users.noreply.github.com>
+Date:   Sun Apr 14 23:07:02 2024 +0900
+
+    Update Readme.md
+
+[33mcommit 48622876e8c7b5101cdd2b3f81a9b30e3dbc1e37[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun Apr 14 22:22:48 2024 +0900
+
+    ADD WorkSpaceController
+
+[33mcommit 02a7893970089dfe90d403b641e2384bdf6b4883[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sat Apr 6 16:04:26 2024 +0900
+
+    ADD WebConfig.java with CORS logic
+
+[33mcommit bf22276f8e379ae92aaba1910599f465d73f6114[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Fri Apr 5 21:40:21 2024 +0900
+
+    Update enaled CSRF protection
+
+[33mcommit 43afbffbc3846cabf930f6488e0dc59d9a9e8074[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Fri Apr 5 18:24:07 2024 +0900
+
+    ADD Register Logic
+
+[33mcommit 8b921d06160fd5d2481882ac57ff4b425b76d85e[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Mon Apr 1 19:20:38 2024 +0900
+
+    ADD Readme.md
+
+[33mcommit 2339ddc2ac8b535a21cf18001d36d6a9eb38996e[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Mon Apr 1 17:46:30 2024 +0900
+
+    ADD UserDao.java, User.java
+
+[33mcommit 601da2901d8c7b6944c63de61601873b249cd71b[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Sun Mar 24 12:30:59 2024 +0900
+
+    ADD signup.js in web
+
+[33mcommit 965ef0b4b28628864f32ed09c235de6bf7e1717d[m
+Author: BiYeon <isly7959@naver.com>
+Date:   Fri Mar 22 17:08:14 2024 +0900
+
+    initial commit
