@@ -4,29 +4,29 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class DealId implements Serializable {
+public class DealValueId implements Serializable {
+    private UUID dealId;
     private UUID attributeId;
-    private UUID workspaceId;
 
-    public DealId() {
+    public DealValueId() {
     }
 
-    public DealId(UUID attributeId, UUID workspaceId) {
+    public DealValueId(UUID dealId, UUID attributeId) {
+        this.dealId = dealId;
         this.attributeId = attributeId;
-        this.workspaceId = workspaceId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DealId that = (DealId) o;
-        return Objects.equals(attributeId, that.attributeId) &&
-                Objects.equals(workspaceId, that.workspaceId);
+        DealValueId that = (DealValueId) o;
+        return Objects.equals(dealId, that.dealId) &&
+                Objects.equals(attributeId, that.attributeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(attributeId, workspaceId);
+        return Objects.hash(dealId, attributeId);
     }
 }

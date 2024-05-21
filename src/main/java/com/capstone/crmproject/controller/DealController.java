@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,11 +39,12 @@ public class DealController {
     }
 
     @Operation(summary = "딜 추가", description = "딜 추가")
-    @PostMapping("/api/workspace/{workspaceId}/deal/add")
+    @PostMapping("/api/workspace/{workspaceId}/deal/{attributeId}/add")
     @ResponseBody
     public ResponseEntity<String> addDeal(
             @AuthenticationPrincipal UserDetails auth,
             @PathVariable UUID workspaceId,
+            @PathVariable UUID attributeId,
             @RequestBody DealDTO dealDTO
     ) {
         if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
@@ -53,12 +55,12 @@ public class DealController {
     }
 
     @Operation(summary = "딜 수정", description = "딜 수정")
-    @PostMapping("/api/workspace/{workspaceId}/deal/{dealId}/update")
+    @PostMapping("/api/workspace/{workspaceId}/deal/{attributeId}/update")
     @ResponseBody
     public ResponseEntity<String> updateDeal(
             @AuthenticationPrincipal UserDetails auth,
             @PathVariable UUID workspaceId,
-            @PathVariable UUID dealId,
+            @PathVariable UUID attributeId,
             @RequestBody DealDTO dealDTO
     ) {
         if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
