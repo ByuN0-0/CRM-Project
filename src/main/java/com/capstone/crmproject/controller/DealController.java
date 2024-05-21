@@ -39,18 +39,17 @@ public class DealController {
     }
 
     @Operation(summary = "딜 추가", description = "딜 추가")
-    @PostMapping("/api/workspace/{workspaceId}/deal/{attributeId}/add")
+    @PostMapping("/api/workspace/{workspaceId}/deal/add")
     @ResponseBody
     public ResponseEntity<String> addDeal(
             @AuthenticationPrincipal UserDetails auth,
-            @PathVariable UUID workspaceId,
-            @PathVariable UUID attributeId,
-            @RequestBody DealDTO dealDTO
+            @PathVariable UUID workspaceId
     ) {
         if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
             return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
-        DealEntity newDeal = dealService.addDealEntity(dealDTO);
-        LocalDateTime date = newDeal.getCreateDate();
+
+        DealEntity newDeal = dealService.addDealEntity(workspaceId);
+        dealService.initValue(newDeal.getDealId());
         return ResponseEntity.ok("{" + date.toString() + "}");
     }
 
