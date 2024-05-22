@@ -2,7 +2,9 @@ package com.capstone.crmproject.controller;
 
 import com.capstone.crmproject.dto.DealDTO;
 import com.capstone.crmproject.entity.CompanyEntity;
-import com.capstone.crmproject.entity.DealWorkspace;
+import com.capstone.crmproject.entity.DealAttribute;
+import com.capstone.crmproject.entity.DealEntity;
+import com.capstone.crmproject.entity.deal.DealValue;
 import com.capstone.crmproject.service.CompanyService;
 import com.capstone.crmproject.service.DealService;
 import com.capstone.crmproject.service.WorkspaceMemberService;
@@ -47,26 +49,54 @@ public class DealController {
         if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
             return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
 
-        DealWorkspace newDeal = dealService.addDealEntity(workspaceId);
-        dealService.initValue(newDeal.getDealId());
-        return ResponseEntity.ok("{" + date.toString() + "}");
+        DealEntity newDeal = dealService.addDealEntity(workspaceId);
+        JSONObject responseData = new JSONObject();
+        responseData.put("dealId", newDeal.getDealId());
+        return ResponseEntity.ok().body(responseData.toString());
     }
 
-    @Operation(summary = "딜 수정", description = "딜 수정")
-    @PostMapping("/api/workspace/{workspaceId}/deal/{attributeId}/update")
+    @Operation(summary = "딜 속성 조회", description = "딜 속성 조회")
+    @PostMapping("/api/workspace/{workspaceId}/deal/attribute")
+    @ResponseBody
+    public ResponseEntity<String> getDealAttribute(
+            @AuthenticationPrincipal UserDetails auth,
+            @PathVariable UUID workspaceId
+    ) {
+        JSONObject responseData = new JSONObject();
+        if (workspaceMemberService.isMember(workspaceId, auth.getUsername())) {
+            responseData.put("error", "User is not a member of this workspace");
+            return ResponseEntity.badRequest().body(responseData.toString());
+        }
+        List<DealAttribute> attributeList = dealService.getDealAttributeList(workspaceId);
+        JSONArray attributeArray = new JSONArray();
+        for (DealAttribute attribute : attributeList) {
+            JSONObject attributeObject = new JSONObject();
+            attributeObject.put("attributeId", attribute.getAttributeId());
+            attributeObject.put("attributeName", attribute.getAttributeName());
+            attributeArray.put(attributeObject);
+        }
+        responseData.put("attributeList", attributeArray);
+        return ResponseEntity.ok().body(responseData.toString());
+    }
+
+    @Operation(summary = "딜 value 수정", description = "딜 수정")
+    @PostMapping("/api/workspace/{workspaceId}/deal/{dealId}/attribute/{attributeId}/update")
     @ResponseBody
     public ResponseEntity<String> updateDeal(
             @AuthenticationPrincipal UserDetails auth,
             @PathVariable UUID workspaceId,
+            @PathVariable UUID dealId,
             @PathVariable UUID attributeId,
             @RequestBody DealDTO dealDTO
     ) {
         if (workspaceMemberService.isMember(workspaceId, auth.getUsername()))
             return ResponseEntity.badRequest().body("{\"error\": \"authentication error\"}");
 
-        DealWorkspace newDeal = dealService.updateDealEntity(dealId, dealDTO);
-        LocalDateTime date = newDeal.getCreateDate();
-        return ResponseEntity.ok("{" + date.toString() + "}");
+        DealValue dealValue = dealService.updateDealValue(dealId, attributeId, dealDTO.getValue());
+        JSONObject responseData = new JSONObject();
+        responseData.put("dealId", dealValue.getDealId());
+
+        return ResponseEntity.ok().body(responseData.toString());
     }
 
     @Operation(summary = "딜 조회", description = "딜 조회")
@@ -81,36 +111,17 @@ public class DealController {
             responseData.put("error", "User is not a member of this workspace");
             return ResponseEntity.badRequest().body(responseData.toString());
         }
-        try{
-            List<DealWorkspace> dealEntityList = dealService.getDealList(workspaceId);
-            JSONArray dealList = new JSONArray();
-            for (DealWorkspace dealEntity : dealEntityList) {
-                JSONObject deal = new JSONObject();
-                JSONObject company = new JSONObject();
-                CompanyEntity companyEntity = companyService.getCompany(dealEntity.getCompanyId());
-
-                company.put("companyId", dealEntity.getCompanyId());
-                company.put("companyName", companyEntity.getCompanyName());
-
-                deal.put("dealId", dealEntity.getId());
-                deal.put("workspaceId", dealEntity.getWorkspaceId());
-                deal.put("company", company);
-                deal.put("Memo", dealEntity.getMemo());
-                deal.put("Email", dealEntity.getEmail());
-                deal.put("investmentRound", dealEntity.getInvestmentRound());
-                deal.put("createDate", dealEntity.getCreateDate());
-                deal.put("updateDate", dealEntity.getUpdateDate());
-                deal.put("phoneNumber", dealEntity.getPhoneNumber());
-                deal.put("customAttribute", dealEntity.getCustomAttribute());
-                dealList.put(deal);
-            }
-            responseData.put("dealList", dealList);
-
-            return ResponseEntity.ok().body(responseData.toString());
-        } catch (Exception e) {
-            responseData.put("error", e);
-            return ResponseEntity.badRequest().body(responseData.toString());
+        List<DealEntity> dealList = dealService.getDealList(workspaceId);
+        JSONArray dealArray = new JSONArray();
+        for (DealEntity deal : dealList) {
+            JSONObject dealObject = new JSONObject();
+            dealObject.put("dealId", deal.getDealId());
+            dealObject.put("createdDate", deal.getCreatedDate());
+            dealObject.put("updatedDate", deal.getUpdatedDate());
+            dealArray.put(dealObject);
         }
+        responseData.put("dealList", dealArray);
+        return ResponseEntity.ok().body(responseData.toString());
     }
 
     @Operation(summary = "딜 삭제", description = "딜 삭제")
@@ -126,13 +137,8 @@ public class DealController {
             responseData.put("error", "User is not a member of this workspace");
             return ResponseEntity.badRequest().body(responseData.toString());
         }
-        try {
-            dealService.deleteDealEntity(dealId);
-            responseData.put("message", "delete deal success");
-            return ResponseEntity.ok().body(responseData.toString());
-        } catch (Exception e) {
-            responseData.put("error", e);
-            return ResponseEntity.badRequest().body(responseData.toString());
-        }
+        dealService.deleteDealEntity(dealId);
+        responseData.put("message", "Deal deleted");
+        return ResponseEntity.ok().body(responseData.toString());
     }
 }

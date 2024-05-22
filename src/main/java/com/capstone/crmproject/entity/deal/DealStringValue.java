@@ -1,9 +1,12 @@
 package com.capstone.crmproject.entity.deal;
 
-import com.capstone.crmproject.entity.deal.DealEntity;
 import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
-public class DealStringValue extends DealEntity {
+public class DealStringValue extends DealValue {
     private String value;
 }

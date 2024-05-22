@@ -10,11 +10,5 @@ import java.util.UUID;
 
 @Getter
 public class DealDTO {
-    private UUID workspaceId;
-    private UUID companyId;
-    private Round Round;
-    private String phoneNumber;
-    private String email;
-    private String memo;
-    private String customAttribute;
+    private String value;
 }

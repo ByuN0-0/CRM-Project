@@ -4,6 +4,7 @@ import com.capstone.crmproject.dto.RegisterUserDTO;
 import com.capstone.crmproject.entity.UserEntity;
 import com.capstone.crmproject.entity.WorkspaceEntity;
 import com.capstone.crmproject.entity.WorkspaceMember;
+import com.capstone.crmproject.service.DealService;
 import com.capstone.crmproject.service.UserService;
 import com.capstone.crmproject.service.WorkspaceMemberService;
 import com.capstone.crmproject.service.WorkspaceService;
@@ -21,13 +22,18 @@ public class UserController {
     private final UserService userService;
     private final WorkspaceService workspaceService;
     private final WorkspaceMemberService workspaceMemberService;
+    private final DealService dealService;
 
-    public UserController(UserService userService, WorkspaceService workspaceService, WorkspaceMemberService workspaceMemberService) {
+    public UserController(UserService userService,
+                          WorkspaceService workspaceService,
+                          WorkspaceMemberService workspaceMemberService,
+                          DealService dealService
+    ) {
         this.userService = userService;
         this.workspaceService = workspaceService;
         this.workspaceMemberService = workspaceMemberService;
+        this.dealService = dealService;
     }
-
 
 
     @GetMapping("/register")
@@ -44,7 +50,7 @@ public class UserController {
             UserEntity newUser = userService.registerUser(registerUserDTO);
             WorkspaceEntity newWorkSpace = workspaceService.createWorkspace(registerUserDTO.getWorkspaceName(), newUser);
             WorkspaceMember newMember = workspaceMemberService.addMember(newWorkSpace.getWorkspaceId(), newUser.getUsername());
-
+            dealService.initValue(newWorkSpace.getWorkspaceId());
             responseData.put("userId", newUser.getUsername());
             responseData.put("workspaceId", newWorkSpace.getWorkspaceId());
 
