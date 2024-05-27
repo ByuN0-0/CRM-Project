@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
-@Setter
 @Entity
 public class WorkspaceEntity {
     @Id
@@ -22,4 +22,21 @@ public class WorkspaceEntity {
     @Column(name = "owner_id")
     private String ownerId;
 
+    @ManyToMany(mappedBy = "workspaces")
+    private List<UserEntity> users;
+
+    @OneToMany(mappedBy = "workspace")
+    private List<DealEntity> deals;
+
+    @OneToMany(mappedBy = "workspace")
+    private List<DealAttributeEntity> dealAttributes;
+
+
+    public WorkspaceEntity() {
+    }
+
+    public WorkspaceEntity(String name, String ownerId) {
+        this.name = name;
+        this.ownerId = ownerId;
+    }
 }

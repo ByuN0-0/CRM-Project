@@ -9,5 +9,4 @@ import java.util.UUID;
 
 @Repository
 public interface DealRepository extends JpaRepository<DealEntity, UUID> {
-    List<DealEntity> findByWorkspaceId(UUID workspaceId);
 }

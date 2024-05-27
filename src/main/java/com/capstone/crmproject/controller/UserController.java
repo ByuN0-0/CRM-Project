@@ -3,10 +3,8 @@ package com.capstone.crmproject.controller;
 import com.capstone.crmproject.dto.RegisterUserDTO;
 import com.capstone.crmproject.entity.UserEntity;
 import com.capstone.crmproject.entity.WorkspaceEntity;
-import com.capstone.crmproject.entity.WorkspaceMember;
 import com.capstone.crmproject.service.DealService;
 import com.capstone.crmproject.service.UserService;
-import com.capstone.crmproject.service.WorkspaceMemberService;
 import com.capstone.crmproject.service.WorkspaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,17 +19,14 @@ public class UserController {
 
     private final UserService userService;
     private final WorkspaceService workspaceService;
-    private final WorkspaceMemberService workspaceMemberService;
     private final DealService dealService;
 
     public UserController(UserService userService,
                           WorkspaceService workspaceService,
-                          WorkspaceMemberService workspaceMemberService,
                           DealService dealService
     ) {
         this.userService = userService;
         this.workspaceService = workspaceService;
-        this.workspaceMemberService = workspaceMemberService;
         this.dealService = dealService;
     }
 
@@ -47,12 +42,12 @@ public class UserController {
     public ResponseEntity<String> registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
         JSONObject responseData = new JSONObject();
         try {
-            UserEntity newUser = userService.registerUser(registerUserDTO);
-            WorkspaceEntity newWorkSpace = workspaceService.createWorkspace(registerUserDTO.getWorkspaceName(), newUser);
-            WorkspaceMember newMember = workspaceMemberService.addMember(newWorkSpace.getWorkspaceId(), newUser.getUsername());
-            dealService.initValue(newWorkSpace.getWorkspaceId());
+
+            WorkspaceEntity newWorkspace = workspaceService.createWorkspace(registerUserDTO.getWorkspaceName(), registerUserDTO.getUsername());
+            UserEntity newUser = userService.registerUser(registerUserDTO, newWorkspace);
+            dealService.initValue(newWorkspace.getWorkspaceId());
             responseData.put("userId", newUser.getUsername());
-            responseData.put("workspaceId", newWorkSpace.getWorkspaceId());
+            responseData.put("workspaceId", newWorkspace.getWorkspaceId());
 
             return ResponseEntity.ok().body(responseData.toString());
         } catch (Exception e) {

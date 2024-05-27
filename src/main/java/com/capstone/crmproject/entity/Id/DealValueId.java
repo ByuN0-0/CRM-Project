@@ -1,19 +1,22 @@
 package com.capstone.crmproject.entity.Id;
 
+import com.capstone.crmproject.entity.DealAttributeEntity;
+import com.capstone.crmproject.entity.DealEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 public class DealValueId implements Serializable {
-    private UUID dealId;
-    private UUID attributeId;
+    private DealEntity deal;
+    private DealAttributeEntity attribute;
 
     public DealValueId() {
     }
 
-    public DealValueId(UUID dealId, UUID attributeId) {
-        this.dealId = dealId;
-        this.attributeId = attributeId;
+    public DealValueId(DealEntity deal, DealAttributeEntity attribute) {
+        this.deal = deal;
+        this.attribute = attribute;
     }
 
     @Override
@@ -21,12 +24,12 @@ public class DealValueId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DealValueId that = (DealValueId) o;
-        return Objects.equals(dealId, that.dealId) &&
-                Objects.equals(attributeId, that.attributeId);
+        return Objects.equals(deal, that.deal) &&
+                Objects.equals(attribute, that.attribute);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dealId, attributeId);
+        return Objects.hash(deal, attribute);
     }
 }
