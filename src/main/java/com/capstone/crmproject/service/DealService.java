@@ -9,12 +9,19 @@ import com.capstone.crmproject.repository.DealRepository;
 import com.capstone.crmproject.repository.DealValueRepository;
 import com.capstone.crmproject.repository.DealWorkspaceRepository;
 import jakarta.persistence.EntityNotFoundException;
+
+import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 @Service
 public class DealService {
@@ -122,5 +129,21 @@ public class DealService {
         dealAttributeRepository.save(attribute3);
         dealAttributeRepository.save(attribute4);
         dealAttributeRepository.save(attribute5);
+    }
+
+    public List<DealEntity> getFilteredAndSortedDealList(UUID workspaceId, LocalDateTime createdAfter, LocalDateTime createdBefore, Sort sort) {
+        return dealRepository.findAll((root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("workspace").get("id"), workspaceId));
+            if (createdAfter != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("createdDate"), createdAfter));
+            }
+            if (createdBefore != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("createdDate"), createdBefore));
+            }
+            Predicate filterPredicate = cb.and(predicates.toArray(new Predicate[0]));
+            query.where(filterPredicate); // 필터링 조건 설정
+            return query.getRestriction();
+        }, sort);
     }
 }

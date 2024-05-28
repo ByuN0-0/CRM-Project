@@ -11,7 +11,6 @@ import java.util.UUID;
 
 
 @Getter
-@Setter
 @Entity
 public class DealEntity {
     @Id
@@ -32,6 +31,10 @@ public class DealEntity {
     public DealEntity(WorkspaceEntity workspace, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.workspace = workspace;
         this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+    }
+
+    public void setUpdatedDate(LocalDateTime updatedDate) {
         this.updatedDate = updatedDate;
     }
 }
