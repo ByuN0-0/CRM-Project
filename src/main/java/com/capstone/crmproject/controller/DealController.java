@@ -102,7 +102,13 @@ public class DealController {
         return ResponseEntity.ok().body(responseData.toString());
     }
 
-    @Operation(summary = "딜 조회", description = "딜 조회")
+    @Operation(summary = "딜 조회",
+            description =   "sortProperty : 정렬 속성(createdDate, updatedDate)," +
+                            " sortDirection : 정렬 방향(ASC,DESC)," +
+                            " createdAfter : ~부터," +
+                            " createdBefore : ~까지," +
+                            " filterProperty : 보여줄attribute" +
+                            " 기본값: createdDate, ASC, 2000-01-01, 2030-12-31, 모든 attribute")
     @PostMapping("/api/workspace/{workspaceId}/deal/")
     @ResponseBody
     public ResponseEntity<String> getDeal(
@@ -122,7 +128,7 @@ public class DealController {
         LocalDateTime createdBefore = dealSearchDTO.getCreatedBefore();
         List<String> filterProperty = dealSearchDTO.getFilterProperty();
 
-        if(sortProperty == null || sortProperty.isEmpty()) {
+        if (sortProperty == null || sortProperty.isEmpty()) {
             sortProperty = "createdDate"; // 기본 정렬 속성 설정
         }
         if (sortDirection == null || sortDirection.isEmpty()) {
@@ -152,7 +158,7 @@ public class DealController {
             List<DealValueEntity> filteredDealValues = deal.getDealValues().stream()
                     // 여기에 원하는 조건을 적용하여 필터링
                     .filter(dealValue -> {
-                        for(String property : finalFilterProperty) {
+                        for (String property : finalFilterProperty) {
                             if (dealValue.getAttribute().getAttributeName().equals(property)) {
                                 return true;
                             }
