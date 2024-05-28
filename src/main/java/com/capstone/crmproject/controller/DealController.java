@@ -107,19 +107,20 @@ public class DealController {
     public ResponseEntity<String> getDeal(
             @AuthenticationPrincipal UserDetails auth,
             @PathVariable UUID workspaceId,
-            @RequestParam(required = false) String sortProperty, //sortProperty 추가
-            @RequestParam(required = false) String sortDirection,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAfter,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdBefore,
-            @RequestParam(required = false) List<String> filterProperty,
-            @RequestParam(required = false) String filterValue
-
+            @RequestBody DealDTO dealDTO
     ) {
         JSONObject responseData = new JSONObject();
         if (!workspaceService.isMember(workspaceId, auth.getUsername())) {
             responseData.put("error", "User is not a member of this workspace");
             return ResponseEntity.badRequest().body(responseData.toString());
         }
+
+        String sortProperty = dealDTO.getSortProperty();
+        String sortDirection = dealDTO.getSortDirection();
+        LocalDateTime createdAfter = dealDTO.getCreatedAfter();
+        LocalDateTime createdBefore = dealDTO.getCreatedBefore();
+        List<String> filterProperty = dealDTO.getFilterProperty();
+
         if(sortProperty == null || sortProperty.isEmpty()) {
             sortProperty = "createdDate"; // 기본 정렬 속성 설정
         }
