@@ -13,9 +13,4 @@ import java.util.UUID;
 @Getter
 public class DealDTO {
     private String value;
-    private String sortProperty;
-    private String sortDirection;
-    private LocalDateTime createdAfter;
-    private LocalDateTime createdBefore;
-    private List<String> filterProperty;
 }

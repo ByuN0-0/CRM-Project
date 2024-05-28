@@ -1,6 +1,7 @@
 package com.capstone.crmproject.controller;
 
 import com.capstone.crmproject.dto.DealDTO;
+import com.capstone.crmproject.dto.DealSearchDTO;
 import com.capstone.crmproject.entity.DealAttributeEntity;
 import com.capstone.crmproject.entity.DealEntity;
 import com.capstone.crmproject.entity.DealValueEntity;
@@ -107,7 +108,7 @@ public class DealController {
     public ResponseEntity<String> getDeal(
             @AuthenticationPrincipal UserDetails auth,
             @PathVariable UUID workspaceId,
-            @RequestBody DealDTO dealDTO
+            @RequestBody DealSearchDTO dealSearchDTO
     ) {
         JSONObject responseData = new JSONObject();
         if (!workspaceService.isMember(workspaceId, auth.getUsername())) {
@@ -115,11 +116,11 @@ public class DealController {
             return ResponseEntity.badRequest().body(responseData.toString());
         }
 
-        String sortProperty = dealDTO.getSortProperty();
-        String sortDirection = dealDTO.getSortDirection();
-        LocalDateTime createdAfter = dealDTO.getCreatedAfter();
-        LocalDateTime createdBefore = dealDTO.getCreatedBefore();
-        List<String> filterProperty = dealDTO.getFilterProperty();
+        String sortProperty = dealSearchDTO.getSortProperty();
+        String sortDirection = dealSearchDTO.getSortDirection();
+        LocalDateTime createdAfter = dealSearchDTO.getCreatedAfter();
+        LocalDateTime createdBefore = dealSearchDTO.getCreatedBefore();
+        List<String> filterProperty = dealSearchDTO.getFilterProperty();
 
         if(sortProperty == null || sortProperty.isEmpty()) {
             sortProperty = "createdDate"; // 기본 정렬 속성 설정
