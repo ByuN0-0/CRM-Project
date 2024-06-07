@@ -1,0 +1,37 @@
+name : CI/CD
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions:/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean bootJar
+
+      - name: Get current time
+        uses: josStorer/get-current-time@v2.0.2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+9:00"
+
+      - name: Set artifact
+        run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
+
+      - name: Start database service
+        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yml up -d database
+
+      - name: Start app service
+        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yml up -d app
