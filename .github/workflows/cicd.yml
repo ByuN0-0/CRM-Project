@@ -20,6 +20,9 @@ jobs:
       - name: Check current directory contents
         run: ls -l
 
+      - name: Grant execute permission for docker-compose
+        run: chmod +x /home/ubuntu/CRM-Project/docker-compose.yaml
+
       - name: Stop app service
         run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml stop app
 
