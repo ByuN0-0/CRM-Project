@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
@@ -14,14 +14,23 @@ jobs:
           distribution: 'zulu'
           java-version: '21'
 
-      - name: Grant execute permission for gradlew
+      - name: Grant execute permission for gradle
         run: chmod +x gradle
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Check current directory contents
+        run: ls -l
+
+      - name: Grant execute permission for docker-compose
+        run: chmod +x docker-compose.yaml
+
       - name: Stop app service
-        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml stop app
+        run: docker-compose -f docker-compose.yaml stop app
 
       - name: Stop database service
-        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml stop database
+        run: docker-compose -f docker-compose.yaml stop database
 
       - name: docker-compose down
         run: docker-compose down
@@ -40,7 +49,7 @@ jobs:
         run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
 
       - name: Start database service
-        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml up -d database
+        run: docker-compose -f docker-compose.yaml up -d database
 
       - name: Start app service
-        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml up -d app
+        run: docker-compose -f docker-compose.yaml up -d app
