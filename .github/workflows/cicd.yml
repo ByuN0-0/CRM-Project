@@ -21,13 +21,13 @@ jobs:
         run: ls -l
 
       - name: Grant execute permission for docker-compose
-        run: chmod +x /home/ubuntu/CRM-Project/docker-compose.yaml
+        run: chmod +x docker-compose.yaml
 
       - name: Stop app service
-        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml stop app
+        run: docker-compose -f docker-compose.yaml stop app
 
       - name: Stop database service
-        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml stop database
+        run: docker-compose -f docker-compose.yaml stop database
 
       - name: docker-compose down
         run: docker-compose down
@@ -46,7 +46,7 @@ jobs:
         run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
 
       - name: Start database service
-        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml up -d database
+        run: docker-compose -f docker-compose.yaml up -d database
 
       - name: Start app service
-        run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml up -d app
+        run: docker-compose -f docker-compose.yaml up -d app
