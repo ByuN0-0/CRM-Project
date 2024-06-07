@@ -46,8 +46,8 @@ const App = () => {
       <Layout style={{ minHeight: '100vh' }}>
           <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
               <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
-              <CompanyModal addCompany={addCompany}/>
-              <DealModal />
+             
+             
           </Sider>
           <DealGrid/>
       </Layout>

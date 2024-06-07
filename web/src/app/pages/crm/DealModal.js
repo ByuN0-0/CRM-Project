@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 
-const App = ({ companies = [] }) => { // companies 배열에 기본값 [] 설정
+const App = ({ companies = [] }) => { 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -22,7 +22,7 @@ const App = ({ companies = [] }) => { // companies 배열에 기본값 [] 설정
 
         <label>회사를 선택해주세요 : </label> 
         <select>
-          {companies?.map(company => ( // 옵셔널 체이닝 사용
+          {companies?.map(company => (
             <option key={company.key} value={company.name}>{company.name}</option>
           ))}
         </select><br/><br/>

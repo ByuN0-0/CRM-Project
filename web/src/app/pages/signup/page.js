@@ -1,11 +1,12 @@
 "use client";
 import { useState } from 'react';
+import axios from 'axios'; // axios를 import합니다.
 
 const SignUpPage = () => {
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
+        username: '', // name -> username으로 변경
         password: '',
+        workspaceName: '', // 필드 추가
     });
 
     const handleChange = (e) => {
@@ -15,14 +16,26 @@ const SignUpPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // 여기에 회원가입 처리 로직을 추가하세요
-        console.log('Form submitted:', formData);
+        
+        // axios를 사용하여 회원가입 처리 로직 추가
+        axios.post('http://61.109.237.69:8080/api/register', {
+            username: formData.username,
+            password: formData.password,
+            workspaceName: formData.workspaceName
+        })
+        .then(response => {
+            console.log('Success:', response.data);
+            // 회원가입 성공 후 처리 로직
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // 에러 처리 로직
+        });
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-
-        <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-96">
                 <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
                     Sign Up
                 </h2>
@@ -30,9 +43,9 @@ const SignUpPage = () => {
                     <div>
                         <input
                             type="text"
-                            name="name"
-                            placeholder="Name"
-                            value={formData.name}
+                            name="workspaceName" // name 값을 workspaceName으로 변경
+                            placeholder="Workspace Name"
+                            value={formData.workspaceName}
                             onChange={handleChange}
                             className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500"
                             required
@@ -41,9 +54,9 @@ const SignUpPage = () => {
                     <div>
                         <input
                             type="email"
-                            name="email"
+                            name="username" // name 값을 username으로 변경
                             placeholder="Email"
-                            value={formData.email}
+                            value={formData.username}
                             onChange={handleChange}
                             className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500"
                             required
