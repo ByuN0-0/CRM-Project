@@ -17,6 +17,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradle
 
+      - name: Check current directory contents
+        run: ls -l
+
       - name: Stop app service
         run: docker-compose -f /home/ubuntu/CRM-Project/docker-compose.yaml stop app
 
