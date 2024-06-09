@@ -2,20 +2,36 @@
 import React, { useState } from 'react';
 import './login.css';
 import { useRouter } from 'next/navigation';
+import axios from "axios";
+import Cookies from 'js-cookie';
 
 const App = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
-    
+    const [token, setToken] = useState('');
+
     const handleLogin = (e) => {
         e.preventDefault(); // 폼의 기본 제출 이벤트를 방지
 
-        // 로그인 로직을 여기에 추가하세요.
-        // 예를 들어, id와 password를 검증하는 로직 등
+        axios.post('http://61.109.237.69:8080/login', {
+            username: id,
+            password: password,
+        }, {headers: {'Content-Type': 'application/json'}})
+            .then(response => {
+                console.log('Success');
+                const receivedToken = response.headers['authorization'].split(' ')[1];
+                setToken(receivedToken);
+                Cookies.set('jwtToken', receivedToken); // 토큰을 쿠키에 저장
+                router.push('/pages/crm');
+                // 로그인 성공
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // 로그인 실패
+            });
 
         // 검증 후 /crm 페이지로 이동
-        router.push('/pages/crm');
     };
 
     const handleSignUpClick = (e) => {
