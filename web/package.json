@@ -9,12 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.3.7",
+    "@types/antd": "^1.0.0",
+    "ag-grid-react": "^31.3.1",
+    "antd": "^5.17.0",
+    "axios": "^1.7.2",
+    "js-cookie": "^3.0.5",
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18",
     "react-jsx": "^1.0.0"
   },
   "devDependencies": {
+    "@types/node": "20.12.10",
+    "@types/react": "18.3.1",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
