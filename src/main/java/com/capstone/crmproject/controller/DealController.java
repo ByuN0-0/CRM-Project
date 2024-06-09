@@ -166,7 +166,7 @@ public class DealController {
                         return false;
                     }).toList();
             filteredDealValues.forEach(dealValue -> {
-                dealObject.put(dealValue.getAttribute().getAttributeName(), dealValue.getValue());
+                dealObject.put(dealValue.getAttribute().getAttributeId().toString(), dealValue.getValue());
             });
             dealArray.put(dealObject);
         }
