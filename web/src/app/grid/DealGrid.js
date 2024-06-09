@@ -290,13 +290,15 @@ const DealGrid = ({companies = []}) => {
         setSelectedRows(event.api.getSelectedRows());
     };
 
-    const handleDeleteSelected = () => {
+    const handleDeleteSelected = () => { //TODO: 선택된 거래 삭제 api연결까지 해야함
         const updatedRowData = rowData.filter(row => !selectedRows.includes(row));
+        const deletedDealIds = selectedRows.map(row => row.dealId);
+        console.log('Deleted Deal IDs:', deletedDealIds);
         setRowData(updatedRowData);
         setSelectedRows([]);
     };
 
-    const onCellValueChanged = async (params) => { //TODO
+    const onCellValueChanged = async (params) => {
         const keys = Object.keys(params.data);
         const attributeId = keys[keys.length - 1];
 
