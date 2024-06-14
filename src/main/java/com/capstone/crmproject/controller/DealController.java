@@ -43,7 +43,7 @@ public class DealController {
     }
 
     @Operation(summary = "딜 추가", description = "딜 추가")
-    @PostMapping("/api/workspace/{workspaceId}/deal/add")
+    @PostMapping("/api/workspaces/{workspaceId}/deals")
     @ResponseBody
     public ResponseEntity<String> addDeal(
             @AuthenticationPrincipal UserDetails auth,
@@ -59,7 +59,7 @@ public class DealController {
     }
 
     @Operation(summary = "딜 속성 조회", description = "딜 속성 조회")
-    @PostMapping("/api/workspace/{workspaceId}/deal/attribute")
+    @GetMapping("/api/workspaces/{workspaceId}/deals/attributes")
     @ResponseBody
     public ResponseEntity<String> getDealAttribute(
             @AuthenticationPrincipal UserDetails auth,
@@ -83,7 +83,7 @@ public class DealController {
     }
 
     @Operation(summary = "딜 value 수정", description = "딜 수정")
-    @PostMapping("/api/workspace/{workspaceId}/deal/{dealId}/attribute/{attributeId}/update")
+    @PutMapping("/api/workspaces/{workspaceId}/deals/{dealId}/attributes/{attributeId}")
     @ResponseBody
     public ResponseEntity<String> updateDeal(
             @AuthenticationPrincipal UserDetails auth,
@@ -97,8 +97,9 @@ public class DealController {
 
         DealValueEntity dealValue = dealService.updateDealValue(dealId, attributeId, dealDTO.getValue());
         JSONObject responseData = new JSONObject();
-        responseData.put("dealId", dealValue.getDeal());
-
+        responseData.put("dealId", dealValue.getDeal().getDealId().toString());
+        responseData.put("attributeId", dealValue.getAttribute().getAttributeId().toString());
+        responseData.put("value", dealValue.getValue());
         return ResponseEntity.ok().body(responseData.toString());
     }
 
@@ -109,12 +110,11 @@ public class DealController {
                             " createdBefore : ~까지," +
                             " filterProperty : 보여줄attribute" +
                             " 기본값: createdDate, ASC, 2000-01-01, 2030-12-31, 모든 attribute")
-    @PostMapping("/api/workspace/{workspaceId}/deal/")
+    @GetMapping("/api/workspaces/{workspaceId}/deals")
     @ResponseBody
     public ResponseEntity<String> getDeal(
             @AuthenticationPrincipal UserDetails auth,
-            @PathVariable UUID workspaceId,
-            @RequestBody DealSearchDTO dealSearchDTO
+            @PathVariable UUID workspaceId
     ) {
         JSONObject responseData = new JSONObject();
         if (!workspaceService.isMember(workspaceId, auth.getUsername())) {
@@ -122,11 +122,11 @@ public class DealController {
             return ResponseEntity.badRequest().body(responseData.toString());
         }
 
-        String sortProperty = dealSearchDTO.getSortProperty();
-        String sortDirection = dealSearchDTO.getSortDirection();
-        LocalDateTime createdAfter = dealSearchDTO.getCreatedAfter();
-        LocalDateTime createdBefore = dealSearchDTO.getCreatedBefore();
-        List<String> filterProperty = dealSearchDTO.getFilterProperty();
+        String sortProperty = null; // = dealSearchDTO.getSortProperty();
+        String sortDirection= null; // = dealSearchDTO.getSortDirection();
+        LocalDateTime createdAfter= null; // = dealSearchDTO.getCreatedAfter();
+        LocalDateTime createdBefore= null; // = dealSearchDTO.getCreatedBefore();
+        List<String> filterProperty= null; // = dealSearchDTO.getFilterProperty();
 
         if (sortProperty == null || sortProperty.isEmpty()) {
             sortProperty = "createdDate"; // 기본 정렬 속성 설정
@@ -175,7 +175,7 @@ public class DealController {
     }
 
     @Operation(summary = "딜 삭제", description = "딜 삭제")
-    @PostMapping("/api/workspace/{workspaceId}/deal/{dealId}/delete")
+    @DeleteMapping("/api/workspaces/{workspaceId}/deals/{dealId}")
     @ResponseBody
     public ResponseEntity<String> deleteDeal(
             @AuthenticationPrincipal UserDetails auth,
@@ -189,6 +189,24 @@ public class DealController {
         }
         dealService.deleteDealEntity(dealId);
         responseData.put("message", "Deal deleted");
+        return ResponseEntity.ok().body(responseData.toString());
+    }
+
+    @Operation(summary = "딜 속성 삭제", description = "딜 속성 삭제")
+    @DeleteMapping("/api/workspaces/{workspaceId}/deals/attributes/{attributeId}")
+    @ResponseBody
+    public ResponseEntity<String> deleteDealAttribute(
+            @AuthenticationPrincipal UserDetails auth,
+            @PathVariable UUID workspaceId,
+            @PathVariable UUID attributeId
+    ) {
+        JSONObject responseData = new JSONObject();
+        if (!workspaceService.isMember(workspaceId, auth.getUsername())) {
+            responseData.put("error", "User is not a member of this workspace");
+            return ResponseEntity.badRequest().body(responseData.toString());
+        }
+        dealService.deleteDealAttribute(attributeId);
+        responseData.put("message", "Attribute deleted");
         return ResponseEntity.ok().body(responseData.toString());
     }
 }

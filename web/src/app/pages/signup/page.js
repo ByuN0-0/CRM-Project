@@ -18,7 +18,7 @@ const SignUpPage = () => {
             e.preventDefault();
 
             // axios를 사용하여 회원가입 처리 로직 추가
-            axios.post('http://61.109.237.69:8080/api/register', {
+            axios.post('http://127.0.0.1:8080/api/register', {
                 username: formData.username,
                 password: formData.password,
                 workspaceName: formData.workspaceName

@@ -14,7 +14,7 @@ const App = () => {
     const handleLogin = (e) => {
         e.preventDefault(); // 폼의 기본 제출 이벤트를 방지
 
-        axios.post('http://61.109.237.69:8080/login', {
+        axios.post('http://127.0.0.1:8080/login', {
             username: id,
             password: password,
         }, {headers: {'Content-Type': 'application/json'}})

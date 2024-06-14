@@ -33,7 +33,7 @@ public class WorkspaceController {
 
     @Operation(summary = "워크스페이스 정보", description = "워크스페이스 정보 조회")
     @Parameter(name = "workspaceId", description = "워크스페이스 ID")
-    @PostMapping("/api/workspace/{workspaceId}")
+    @GetMapping("/api/workspaces/{workspaceId}")
     @ResponseBody
     public ResponseEntity<String> getWorkspace(@AuthenticationPrincipal CustomUserDetails auth, @PathVariable UUID workspaceId) {
         JSONObject responseData = new JSONObject();
@@ -54,7 +54,7 @@ public class WorkspaceController {
 
     @Operation(summary = "멤버 추가", description = "멤버 추가")
     @Parameter(name = "workspaceId, memberId", description = "워크스페이스 ID, 멤버 정보")
-    @PostMapping("/api/workspace/{workspaceId}/add-member")
+    @PostMapping("/api/workspaces/{workspaceId}/member")
     @ResponseBody
     public ResponseEntity<String> addMember(@PathVariable UUID workspaceId, @RequestBody WorkspaceDTO workspaceDTO) {
         String memberId = workspaceDTO.getMemberId();
@@ -70,7 +70,7 @@ public class WorkspaceController {
 
     @Operation(summary = "멤버 조회", description = "멤버 조회")
     @Parameter(name = "workspaceId", description = "워크스페이스 ID")
-    @PostMapping("/api/workspace/{workspaceId}/member")
+    @GetMapping("/api/workspaces/{workspaceId}/member")
     @ResponseBody
     public ResponseEntity<String> getMemberList(@AuthenticationPrincipal UserDetails auth, @PathVariable UUID workspaceId) {
         JSONObject responseData = new JSONObject();
@@ -94,7 +94,7 @@ public class WorkspaceController {
     }
 
     @Operation(summary = "내 워크스페이스 목록 조회", description = "내 워크스페이스 목록 조회")
-    @GetMapping("/api/my-workspace")
+    @GetMapping("/api/workspaces")
     @ResponseBody
     public ResponseEntity<String> getMyWorkspaceList(@AuthenticationPrincipal UserDetails auth) {
         JSONObject responseData = new JSONObject();

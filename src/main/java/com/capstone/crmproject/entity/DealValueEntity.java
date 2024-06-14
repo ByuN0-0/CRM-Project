@@ -3,7 +3,9 @@ package com.capstone.crmproject.entity;
 import com.capstone.crmproject.entity.Id.DealValueId;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
 @IdClass(DealValueId.class)
 @Entity

@@ -3,6 +3,7 @@ package com.capstone.crmproject.service;
 import com.capstone.crmproject.entity.DealAttributeEntity;
 import com.capstone.crmproject.entity.DealEntity;
 import com.capstone.crmproject.entity.DealValueEntity;
+import com.capstone.crmproject.entity.Id.DealValueId;
 import com.capstone.crmproject.entity.WorkspaceEntity;
 import com.capstone.crmproject.repository.DealAttributeRepository;
 import com.capstone.crmproject.repository.DealRepository;
@@ -11,8 +12,10 @@ import com.capstone.crmproject.repository.DealWorkspaceRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -60,16 +62,31 @@ public class DealService {
         return workspace.getDealAttributes();
     }
 
+
+    @Transactional
     public DealValueEntity updateDealValue(UUID dealId, UUID attributeId, String value) {
-        DealEntity deal = updateDeal(dealId);
-        //String attributeType = dealAttributeRepository.findByAttributeId(attributeId).getAttributeType();
-        DealAttributeEntity attribute = dealAttributeRepository.findById(attributeId).orElseThrow(() -> new EntityNotFoundException("Can't find attribute"));
-        DealValueEntity dealValue = new DealValueEntity(
-                deal,
-                attribute,
-                value
-        );
-        return dealValueRepository.save(dealValue);
+        DealEntity deal = updateDealDate(dealId);
+        DealAttributeEntity attribute = dealAttributeRepository.findById(attributeId)
+                .orElseThrow(() -> new EntityNotFoundException("Can't find attribute"));
+
+        DealValueId id = new DealValueId(dealId, attributeId);
+        DealValueEntity dealValue = dealValueRepository.findById(id).orElse(null);
+
+
+        if (dealValue == null) {
+            System.out.print("dealValue is null");
+            dealValue = new DealValueEntity(deal, attribute, value);
+        } else {
+            dealValue.setValue(value);
+        }
+        try {
+            return dealValueRepository.save(dealValue);
+        } catch (DataIntegrityViolationException e) {
+            // 중복 키 예외 처리
+            // 예외 처리 로직 추가
+            System.err.println("Duplicate key error: " + e.getMessage());
+            throw new IllegalStateException("Failed to save deal value due to duplicate key");
+        }
     }
 
     public List<DealEntity> getDealList(UUID workspaceId) {
@@ -80,7 +97,7 @@ public class DealService {
         return dealEntityList;
     }
 
-    private DealEntity updateDeal(UUID dealId) {
+    public DealEntity updateDealDate(UUID dealId) {
         // DealEntity 조회 및 갱신
         DealEntity deal = dealRepository.findById(dealId)
                 .orElseThrow(() -> new EntityNotFoundException("Can't find deal"));
@@ -145,5 +162,9 @@ public class DealService {
             query.where(filterPredicate); // 필터링 조건 설정
             return query.getRestriction();
         }, sort);
+    }
+
+    public void deleteDealAttribute(UUID attributeId) {
+        dealAttributeRepository.deleteById(attributeId);
     }
 }

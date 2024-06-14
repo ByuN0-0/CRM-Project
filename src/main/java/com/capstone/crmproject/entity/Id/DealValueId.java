@@ -8,15 +8,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class DealValueId implements Serializable {
-    private DealEntity deal;
-    private DealAttributeEntity attribute;
+    private UUID deal;
+    private UUID attribute;
 
-    public DealValueId() {
-    }
-
-    public DealValueId(DealEntity deal, DealAttributeEntity attribute) {
+    public DealValueId(UUID deal, UUID attribute) {
         this.deal = deal;
         this.attribute = attribute;
+    }
+    public DealValueId() {
     }
 
     @Override

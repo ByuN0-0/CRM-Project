@@ -4,7 +4,7 @@ import {Button, Modal, Input, Select} from 'antd';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import Cookies from 'js-cookie';
-import axios from "axios";
+import axios, {post} from "axios";
 import { useRouter } from 'next/navigation';
 
 const {Option} = Select;
@@ -16,9 +16,10 @@ const DealGrid = ({companies = []}) => {
     const [workspaceId, setWorkspaceId] = useState('');
     const [colDefs, setColDefs] = useState([]);
     const [rowData, setRowData] = useState([]);
+    const baseURL = 'http://127.0.0.1:8080';
     const getWorkspaceId = (token) => {
         // 요청을 보낼 URL
-        const url = 'http://61.109.237.69:8080/api/my-workspace'
+        const url = baseURL + '/api/workspaces'
 
         // 헤더 객체에 토큰을 추가
         const headers = {
@@ -42,7 +43,7 @@ const DealGrid = ({companies = []}) => {
     const getAttributes = async (workspaceId, token) => {
         try {
             // Post 요청을 보낼 URL
-            const url = `http://61.109.237.69:8080/api/workspace/${workspaceId}/deal/attribute`;
+            const url = baseURL + `/api/workspaces/${workspaceId}/deals/attributes`;
 
             // 헤더 객체에 토큰을 추가
             const headers = {
@@ -50,13 +51,8 @@ const DealGrid = ({companies = []}) => {
                 'Content-Type': 'application/json'
             };
 
-            // Post 요청에 필요한 데이터 (데이터가 있다면 적절히 설정하세요)
-            const postData = {
-                // 필요한 데이터 설정
-            };
-
-            // Post 요청을 보냄
-            const response = await axios.post(url, postData, { headers });
+            // Get 요청을 보냄
+            const response = await axios.get(url,{ headers });
 
             // 응답 데이터에서 attributes 추출하여 상태로 저장
             const receivedAttributes = response.data.attributeList.map(attribute => ({
@@ -99,15 +95,12 @@ const DealGrid = ({companies = []}) => {
 
     const getDeal = async (workspaceId, token) => {
         try {
-            const url = `http://61.109.237.69:8080/api/workspace/${workspaceId}/deal/`;
+            const url = baseURL + `/api/workspaces/${workspaceId}/deals`;
             const headers = {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             };
-            const postData = {
-                // 필요한 데이터 설정
-            };
-            const response = await axios.post(url, postData, {headers});
+            const response = await axios.get(url, {headers});
             const receivedDeals = response.data.dealList;
             console.log('Data:', receivedDeals);
             setRowData(receivedDeals);
@@ -117,7 +110,7 @@ const DealGrid = ({companies = []}) => {
     };
     const updateDeal = async (dealId, attributeId, value, workspaceId, token) => {
         try {
-            const url = `http://61.109.237.69:8080/api/workspace/${workspaceId}/deal/${dealId}/attribute/${attributeId}/update`;
+            const url = baseURL + `/api/workspaces/${workspaceId}/deals/${dealId}/attributes/${attributeId}`;
 
             const headers = {
                 'Authorization': `Bearer ${token}`,
@@ -128,11 +121,9 @@ const DealGrid = ({companies = []}) => {
                 "value": value
                 // 필요한 데이터 설정
             };
-            console.log("value", value);
-            console.log("url", url);
-            console.log("postData", postData);
-
-            const response = await axios.post(url, postData, { headers });
+            console.log(postData)
+            const response = await axios.put(url, postData, { headers });
+            console.log(postData)
             console.log('Deal updated:', response.data);
         } catch (error) {
             console.error('Error updating deal:', error);
@@ -173,7 +164,6 @@ const DealGrid = ({companies = []}) => {
             });
         }
     }, [token, workspaceId]);
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
     const [newDeal, setNewDeal] = useState({
@@ -229,7 +219,7 @@ const DealGrid = ({companies = []}) => {
 
         try {
             // 새로운 거래 데이터를 서버로 보냄
-            const response = await axios.post(`http://61.109.237.69:8080/api/workspace/${workspaceId}/deal/add`, newEntry, {headers});
+            const response = await axios.post(baseURL+`/api/workspaces/${workspaceId}/deals`, newEntry, {headers});
 
             // 서버로부터 응답을 받으면 처리
             console.log('New deal added:', response.data);
@@ -290,15 +280,29 @@ const DealGrid = ({companies = []}) => {
         setSelectedRows(event.api.getSelectedRows());
     };
 
-    const handleDeleteSelected = () => {
+    const handleDeleteSelected = async () => {
         const updatedRowData = rowData.filter(row => !selectedRows.includes(row));
+        const selectedDealIds = selectedRows.map(row => row.dealId);
+        console.log('Selected deal IDs:', selectedDealIds);
+        const url = baseURL + `/api/workspaces/${workspaceId}/deals`;
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+        for (const dealId of selectedDealIds) {
+            try {
+                await axios.delete(`${url}/${dealId}`, {headers});
+                await getDeal(workspaceId, token);
+            } catch (error) {
+                console.error('Error deleting deal:', error);
+            }
+        }
         setRowData(updatedRowData);
         setSelectedRows([]);
-    };
+    }
 
     const onCellValueChanged = async (params) => { //TODO
-        const keys = Object.keys(params.data);
-        const attributeId = keys[keys.length - 1];
+        const attributeId = params.colDef.field;
 
         await updateDeal(params.data.dealId, attributeId, params.newValue, workspaceId, token);
         const updatedDeal = {
@@ -313,6 +317,7 @@ const DealGrid = ({companies = []}) => {
             return row;
         });
         setRowData(updatedRowData);
+        //await getDeal(workspaceId, token);
     };
 
 
