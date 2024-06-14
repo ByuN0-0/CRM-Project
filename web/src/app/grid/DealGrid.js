@@ -317,7 +317,7 @@ const DealGrid = ({companies = []}) => {
             return row;
         });
         setRowData(updatedRowData);
-        //await getDeal(workspaceId, token);
+        await getDeal(workspaceId, token);
     };
 
 
