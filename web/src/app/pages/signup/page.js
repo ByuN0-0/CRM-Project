@@ -16,8 +16,8 @@ const SignUpPage = () => {
 
         const handleSubmit = (e) => {
             e.preventDefault();
-            const url = 'http://61.109.237.69:8080/api/register';
-            // const url = 'http://127.0.0.1:8080/api/register'; // 로컬 테스트용 URL
+            //const url = 'http://61.109.237.69:8080/api/register';
+            const url = 'http://127.0.0.1:8080/api/register'; // 로컬 테스트용 URL
 
             // axios를 사용하여 회원가입 처리 로직 추가
             axios.post(url, {
