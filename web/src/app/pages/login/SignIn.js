@@ -13,8 +13,10 @@ const App = () => {
 
     const handleLogin = (e) => {
         e.preventDefault(); // 폼의 기본 제출 이벤트를 방지
+        const url = 'http://61.109.237.69:8080/login';
+        // const url = 'http://127.0.0.1:8080/login'; // 로컬 테스트용 URL
 
-        axios.post('http://127.0.0.1:8080/login', {
+        axios.post(url, {
             username: id,
             password: password,
         }, {headers: {'Content-Type': 'application/json'}})
