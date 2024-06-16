@@ -20,17 +20,18 @@ header, footer {
     width: 100%;
     position: fixed;
     left: 0;
-    z-index: 1000;
 }
 
 header {
     top: 0;
     border-bottom: 2px solid #333;
+    z-index: 1000;
 }
 
 footer {
     bottom: 0;
     border-top: 2px solid #333;
+    z-index: 1000;
 }
 
 /* Main content styles */
@@ -47,6 +48,7 @@ main {
 /* Container for the sign-up box */
 .signUpBox {
     width: 400px;
+    height: auto;
     background-color: #3b3b3b;
     text-align: center;
     border-radius: 15px;
