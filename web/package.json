@@ -11,6 +11,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@types/antd": "^1.0.0",
+    "ag-grid-enterprise": "^31.3.2",
     "ag-grid-react": "^31.3.1",
     "antd": "^5.17.0",
     "axios": "^1.7.2",
