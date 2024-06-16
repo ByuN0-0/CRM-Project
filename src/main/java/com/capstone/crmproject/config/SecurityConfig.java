@@ -1,4 +1,4 @@
-package com.capstone.crmproject.security;
+package com.capstone.crmproject.config;
 
 import com.capstone.crmproject.jwt.JWTFilter;
 import com.capstone.crmproject.jwt.JWTUtil;
@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -49,7 +50,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedOrigins(Arrays.asList("https://crm-project-sable.vercel.app/", "http://localhost:3000"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
@@ -83,21 +84,6 @@ public class SecurityConfig {
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        /*
-        http
-                .logout((logout) -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-                );
-                */
-
         return http.build();
     }
-
-    /*
-    private AuthenticationFailureHandler loginFailHandler() {
-        return new LoginFailHandler();
-    }
-    */
-
 }

@@ -16,8 +16,8 @@ const DealGrid = ({companies = []}) => {
     const [workspaceId, setWorkspaceId] = useState('');
     const [colDefs, setColDefs] = useState([]);
     const [rowData, setRowData] = useState([]);
-    //const baseURL = 'http://61.109.237.69:8080';
-    const baseURL = 'http://127.0.0.1:8080'; // 로컬 테스트용 URL
+    const baseURL = 'http://61.109.237.69:8080';
+    //const baseURL = 'http://127.0.0.1:8080'; // 로컬 테스트용 URL
     const getWorkspaceId = (token) => {
         // 요청을 보낼 URL
         const url = baseURL + '/api/workspaces'
