@@ -5,7 +5,7 @@ const Header = () => {
     return (
         <header>
             <h1>CRM-Project</h1>
-            <p>고객 관계 관리 시스템</p>
+   
         </header>
     );
 };

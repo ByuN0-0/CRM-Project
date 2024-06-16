@@ -433,10 +433,10 @@ const DealGrid = ({companies = []}) => {
                 거래 추가
             </Button>
             <Button type="primary" onClick={showColumnModal} style={buttonStyle}>
-                열 추가
+                속성(테마) 추가
             </Button>
             <Button type="primary" onClick={showEditColumnModal} style={buttonStyle}>
-                열 편집
+                속성 편집
             </Button>
             {selectedRows.length > 0 && (
                 <Button type="danger" onClick={handleDeleteSelected} style={buttonStyle}>
@@ -444,14 +444,14 @@ const DealGrid = ({companies = []}) => {
                 </Button>
             )}
 
-            <Modal title="열 추가" open={isColumnModalOpen} onOk={handleColumnOk} onCancel={handleColumnCancel}>
+            <Modal title="속성(테마) 추가" open={isColumnModalOpen} onOk={handleColumnOk} onCancel={handleColumnCancel}>
                 <label>열 이름을 입력해 주세요: </label>
                 <Input type='text' name="headerName" value={newColumn.headerName} onChange={handleColumnInputChange}/>
                 <br/><br/>
 
             </Modal>
             <Modal
-                title="열 편집"
+                title="속성 편집"
                 open={isEditColumnModalOpen}
                 onOk={()=>handleEditColumnOk(selectedColumnField, newHeaderName)}
                 onCancel={handleEditColumnCancel}

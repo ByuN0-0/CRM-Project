@@ -1,4 +1,6 @@
-/* General styles */
+/* basic.css */
+
+/* 전체 페이지 스타일 */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,96 +8,40 @@ body {
     box-sizing: border-box;
     background-color: #121212;
     color: #e0e0e0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
-/* Header and footer styles */
-header, footer {
+/* 헤더 스타일 */
+header {
     background-color: #1f1f1f;
     color: #e0e0e0;
     text-align: center;
     padding: 1rem 0;
     width: 100%;
     position: fixed;
+    top: 0;
     left: 0;
     z-index: 1000;
-}
-
-header {
-    top: 0;
     border-bottom: 2px solid #333;
+    height: 60px; /* 헤더 높이 */
 }
 
+/* 푸터 스타일 */
 footer {
-    bottom: 0;
-    border-top: 2px solid #333;
-}
-
-/* Main content styles */
-main {
-    flex: 1;
-    padding-top: 60px;
-    padding-bottom: 60px;
-    background: linear-gradient(to bottom, #121212, #3b3b3b);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Container for the sign-up box */
-.signUpBox {
-    width: 400px;
-    background-color: #3b3b3b;
+    background-color: #1f1f1f;
+    color: #e0e0e0;
     text-align: center;
-    border-radius: 15px;
-    padding: 30px 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
+    padding: 1rem 0;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    border-top: 2px solid #333;
+    height: 60px; /* 푸터 높이 */
 }
 
-/* Style for the input fields */
-.signUpInput {
-    margin-bottom: 20px;
-}
-
-.signUpInput input {
-    height: 45px;
-    width: 260px;
-    border: none;
-    border-radius: 10px;
-    padding-left: 10px;
-    font-size: 16px;
-    background-color: #ffffff;
-    color: #333333;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.signUpInput input:focus {
-    outline: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Style for the buttons */
-.signUpBtn {
-    height: 45px;
-    width: 280px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
-
-.signUpBtn:hover {
-    background-color: #0056b3;
-}
-
-.signUpBtn:active {
-    background-color: #003f7f;
+/* 컨텐츠 영역 스타일 */
+.content {
+    padding-top: 60px; /* 헤더 높이만큼 패딩 */
+    padding-bottom: 60px; /* 푸터 높이만큼 패딩 */
 }
