@@ -1,29 +1,29 @@
-header{
-    top :0px;
-    width: 100%;
-    height: 150px;
-    background-color: black;
-    color:white;
-    text-align: center;
-    line-height: 150px;
-    font-size: 30px;
+/* basic.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #121212;
+    color: #e0e0e0;
 }
 
-footer{
-    
-    width: 100%;
-    height: 150px;
-    bottom: 0px;
-    background-color: black;
+header, footer {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
     text-align: center;
-    line-height: 150px;
-    font-size: 30px;
+    padding: 1rem 0;
+    width: 100%; /* Make sure header and footer span the full width */
+    position: fixed; /* Fix header and footer to the top and bottom */
+    left: 0;
 }
 
-.signInbtn{
-    background-color: white;
-    width: 150px;
-    height: 50px;
-    margin-top: 30px;
-    border-radius: 50px;
+header {
+    top: 0;
+    border-bottom: 2px solid #333;
+}
+
+footer {
+    bottom: 0;
+    border-top: 2px solid #333;
 }

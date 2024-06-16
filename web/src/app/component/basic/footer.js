@@ -5,7 +5,7 @@ const Footer = () => {
     return (
         <footer>
             CRM-Project
-            </footer>
+        </footer>
     );
 };
 

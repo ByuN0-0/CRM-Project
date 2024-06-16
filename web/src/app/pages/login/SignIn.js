@@ -19,7 +19,7 @@ const App = () => {
         axios.post(url, {
             username: id,
             password: password,
-        }, {headers: {'Content-Type': 'application/json'}})
+        }, { headers: { 'Content-Type': 'application/json' } })
             .then(response => {
                 console.log('Success');
                 const receivedToken = response.headers['authorization'].split(' ')[1];
@@ -65,7 +65,6 @@ const App = () => {
                 <div className='signInInput'>
                     <button type="submit" className="signInbtn">Login</button>
                 </div>
-                {/* submit 대신 button 타입을 사용하여 폼 제출을 방지합니다. */}
                 <button type="button" className="signInbtn" onClick={handleSignUpClick}>SignUp</button>
             </form>
         </div>

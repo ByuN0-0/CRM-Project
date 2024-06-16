@@ -105,11 +105,11 @@ public class DealController {
 
     @Operation(summary = "딜 조회",
             description =   "sortProperty : 정렬 속성(createdDate, updatedDate)," +
-                            " sortDirection : 정렬 방향(ASC,DESC)," +
-                            " createdAfter : ~부터," +
-                            " createdBefore : ~까지," +
-                            " filterProperty : 보여줄attribute" +
-                            " 기본값: createdDate, ASC, 2000-01-01, 2030-12-31, 모든 attribute")
+                    " sortDirection : 정렬 방향(ASC,DESC)," +
+                    " createdAfter : ~부터," +
+                    " createdBefore : ~까지," +
+                    " filterProperty : 보여줄attribute" +
+                    " 기본값: createdDate, ASC, 2000-01-01, 2030-12-31, 모든 attribute")
     @GetMapping("/api/workspaces/{workspaceId}/deals")
     @ResponseBody
     public ResponseEntity<String> getDeal(
@@ -128,24 +128,8 @@ public class DealController {
         LocalDateTime createdBefore= null; // = dealSearchDTO.getCreatedBefore();
         List<String> filterProperty= null; // = dealSearchDTO.getFilterProperty();
 
-                deal.put("dealId", dealEntity.getId());
-                deal.put("workspaceId", dealEntity.getWorkspaceId());
-                deal.put("company", company);
-                deal.put("Memo", dealEntity.getMemo());
-                deal.put("Email", dealEntity.getEmail());
-                deal.put("investmentRound", dealEntity.getRound());
-                deal.put("createDate", dealEntity.getCreateDate());
-                deal.put("updateDate", dealEntity.getUpdateDate());
-                deal.put("phoneNumber", dealEntity.getPhoneNumber());
-                deal.put("customAttribute", dealEntity.getCustomAttribute());
-                dealList.put(deal);
-            }
-            responseData.put("dealList", dealList);
-
-            return ResponseEntity.ok().body(responseData.toString());
-        } catch (Exception e) {
-            responseData.put("error", e);
-            return ResponseEntity.badRequest().body(responseData.toString());
+        if (sortProperty == null || sortProperty.isEmpty()) {
+            sortProperty = "createdDate"; // 기본 정렬 속성 설정
         }
         if (sortDirection == null || sortDirection.isEmpty()) {
             sortDirection = "ASC"; // 기본 정렬 방향 설정
