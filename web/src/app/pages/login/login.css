@@ -1,4 +1,4 @@
-/* General styles */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -11,14 +11,14 @@ body {
     min-height: 100vh;
 }
 
-/* Header styles */
+
 header, footer {
     background-color: #1f1f1f;
     color: #e0e0e0;
     text-align: center;
     padding: 1rem 0;
-    width: 100%; /* Make sure header and footer span the full width */
-    position: fixed; /* Fix header and footer to the top and bottom */
+    width: 100%; 
+    position: fixed; 
     left: 0;
 }
 
@@ -34,75 +34,75 @@ footer {
     z-index: 1000;
 }
 
-/* Main content styles */
+
 main {
-    flex: 1; /* Make sure main content takes up remaining space */
-    padding-top: 60px; /* Space for fixed header */
-    padding-bottom: 60px; /* Space for fixed footer */
+    flex: 1; 
+    padding-top: 60px; 
+    padding-bottom: 60px; 
     background: linear-gradient(to bottom, #121212, #3b3b3b);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Container for the sign-in box */
+
 .signInbox {
     width: 400px;
-    height: auto; /* Adjusted to fit content */
-    background-color: #3b3b3b; /* Darker background for better contrast */
+    height: auto; 
+    background-color: #3b3b3b; 
     text-align: center;
-    border-radius: 15px; /* Reduced border radius for a sleeker look */
-    padding: 30px 20px; /* Added padding for better spacing */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added box shadow for depth */
-    color: #ffffff; /* Text color */
+    border-radius: 15px; 
+    padding: 30px 20px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    color: #ffffff; 
 }
 
-/* Style for the input fields */
+
 .signInInput {
-    margin-bottom: 20px; /* Added margin for better spacing */
+    margin-bottom: 20px; 
 }
 
 .signInInput input {
-    height: 45px; /* Slightly reduced height */
-    width: 260px; /* Slightly reduced width */
+    height: 45px; 
+    width: 260px; 
     border: none;
-    border-radius: 10px; /* Rounded corners */
-    padding-left: 10px; /* Added padding for text */
-    font-size: 16px; /* Increased font size */
-    background-color: #ffffff; /* White background for inputs */
-    color: #333333; /* Dark text color */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for inputs */
-    transition: all 0.3s ease; /* Smooth transition for focus state */
+    border-radius: 10px; 
+    padding-left: 10px; 
+    font-size: 16px; 
+    background-color: #ffffff; 
+    color: #333333; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    transition: all 0.3s ease; 
 }
 
 .signInInput input:focus {
     outline: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More pronounced shadow on focus */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
-/* Style for the buttons */
+
 .signInbtn {
     height: 45px;
     width: 280px;
-    background-color: #007bff; /* Blue button background */
-    color: #ffffff; /* White text color */
+    background-color: #007bff; 
+    color: #ffffff; 
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 18px; /* Increased font size */
-    transition: background-color 0.3s ease; /* Smooth transition for hover state */
-    margin-top: 10px; /* Added margin for better spacing */
+    font-size: 18px; 
+    transition: background-color 0.3s ease; 
+    margin-top: 10px; 
 }
 
 .signInbtn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3; 
 }
 
 .signInbtn:active {
-    background-color: #003f7f; /* Even darker blue on click */
+    background-color: #003f7f; 
 }
 
-/* Add a little extra spacing between the sign-in and sign-up buttons */
+
 button[type="button"] {
     margin-top: 20px;
 }
