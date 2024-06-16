@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 
-
+@Setter
 @Getter
 @Entity
 public class DealAttributeEntity {
@@ -17,11 +18,15 @@ public class DealAttributeEntity {
     @ManyToOne
     @JoinColumn(name = "workspace_id")
     private WorkspaceEntity workspace;
+    private int attributeOrder;
     private String attributeName;
     private String attributeType;
+    @OneToMany(mappedBy = "attribute", cascade = CascadeType.REMOVE)
+    private List<DealValueEntity> dealValues;
 
-    public DealAttributeEntity(WorkspaceEntity workspace, String attributeName, String attributeType) {
+    public DealAttributeEntity(WorkspaceEntity workspace, int attributeOrder, String attributeName, String attributeType) {
         this.workspace = workspace;
+        this.attributeOrder = attributeOrder;
         this.attributeName = attributeName;
         this.attributeType = attributeType;
     }

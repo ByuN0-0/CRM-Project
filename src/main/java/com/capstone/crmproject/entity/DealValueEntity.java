@@ -16,7 +16,7 @@ public class DealValueEntity {
     private DealEntity deal;
 
     @Id
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "attribute_id")
     private DealAttributeEntity attribute;
 

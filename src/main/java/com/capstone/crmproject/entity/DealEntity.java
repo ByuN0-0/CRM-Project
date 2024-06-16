@@ -17,24 +17,17 @@ public class DealEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID DealId;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "workspace_id")
     private WorkspaceEntity workspace;
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
     @OneToMany(mappedBy = "deal", cascade = CascadeType.REMOVE)
     private List<DealValueEntity> dealValues;
 
     public DealEntity() {
     }
 
-    public DealEntity(WorkspaceEntity workspace, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public DealEntity(WorkspaceEntity workspace) {
         this.workspace = workspace;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
     }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
-        this.updatedDate = updatedDate;
-    }
 }

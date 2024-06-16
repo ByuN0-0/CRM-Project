@@ -16,8 +16,9 @@ const DealGrid = ({companies = []}) => {
     const [workspaceId, setWorkspaceId] = useState('');
     const [colDefs, setColDefs] = useState([]);
     const [rowData, setRowData] = useState([]);
-    const baseURL = 'http://61.109.237.69:8080';
-    //const baseURL = 'http://127.0.0.1:8080'; // 로컬 테스트용 URL
+    const [count, setCount] = useState(0);
+    //const baseURL = 'http://61.109.237.69:8080';
+    const baseURL = 'http://127.0.0.1:8080'; // 로컬 테스트용 URL
     const getWorkspaceId = (token) => {
         // 요청을 보낼 URL
         const url = baseURL + '/api/workspaces'
@@ -54,41 +55,26 @@ const DealGrid = ({companies = []}) => {
 
             // Get 요청을 보냄
             const response = await axios.get(url,{ headers });
-
+            const attributeList = response.data.attributeList;
+            attributeList.sort((a, b) => a.attributeOrder - b.attributeOrder);
             // 응답 데이터에서 attributes 추출하여 상태로 저장
-            const receivedAttributes = response.data.attributeList.map(attribute => ({
+            const receivedAttributes = attributeList.map(attribute => ({
                 field: attribute.attributeId, // attributeId를 field로 설정
                 headerName: attribute.attributeName, // attributeName을 headerName으로 설정
                 checkboxSelection: false, // 필요에 따라 checkboxSelection과 editable을 추가적으로 설정할 수 있습니다.
                 editable: true
             }));
-            receivedAttributes.unshift({
-                field: 'num',
-                headerName: 'num',
-                checkboxSelection: true,
-                editable: true
-            });
+            receivedAttributes[0].checkboxSelection = true; // 첫 번째 요소의 checkboxSelection을 true로 설정
             receivedAttributes.unshift({
                 field: 'dealId',
-                headerName: 'dealId',
-                checkboxSelection: false,
+                headerName: 'index',
+                checkboxSelection: true,
                 editable: false,
                 hide: true
             });
-            receivedAttributes.push({
-                field: 'createdDate',
-                headerName: '생성 날짜',
-                checkboxSelection: false,
-                editable: false
-            });
-            receivedAttributes.push({
-                field: 'updatedDate',
-                headerName: '수정 날짜',
-                checkboxSelection: false,
-                editable: false
-            });
             console.log('Data:', receivedAttributes);
             setColDefs(receivedAttributes);
+
         } catch (error) {
             console.error('Error:', error);
         }
@@ -122,16 +108,51 @@ const DealGrid = ({companies = []}) => {
                 "value": value
                 // 필요한 데이터 설정
             };
-            console.log(postData)
             const response = await axios.put(url, postData, { headers });
-            console.log(postData)
             console.log('Deal updated:', response.data);
         } catch (error) {
             console.error('Error updating deal:', error);
         }
     };
+    const updateAttribute = async (workspaceId, token, attributeId, toIndex, value) => {
+        try {
+            const url = baseURL + `/api/workspaces/${workspaceId}/deals/attributes/${attributeId}`;
 
-    useEffect(() => {
+            const headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+            const Data = {
+                "endIndex": toIndex,
+                "attributeName": value
+            }
+            const response = await axios.put(url, Data, {headers});
+            console.log('Attribute updated:', response.data);
+
+        }
+        catch (error) {
+            console.error('Error updating attribute:', error);
+        }
+    }
+    const addAttribute = async (workspaceId, token, value) => {
+        try {
+            const url = baseURL + `/api/workspaces/${workspaceId}/deals/attributes`;
+
+            const headers = {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+            const Data = {
+                "attributeName": value
+            }
+            const response = await axios.post(url, Data, {headers});
+            console.log('Attribute added:', response.data);
+        } catch (error) {
+            console.error('Error adding attribute:', error);
+        }
+    }
+
+    useEffect(() => {   // 렌더링시 쿠키에서 토큰
         // 페이지가 렌더링될 때 쿠키에서 토큰을 가져와 설정
         const storedToken = Cookies.get('jwtToken');
         if (storedToken) {
@@ -142,31 +163,32 @@ const DealGrid = ({companies = []}) => {
         }
     }, []);
 
-    useEffect(() => {
+    useEffect(() => {   // 쿠키 가져오면 workspace 가져오기
         // token이 변경되었을 때만 getWorkspaceId 호출
         if (token) {
             getWorkspaceId(token);
         }
     }, [token]);
 
-    useEffect(() => {
+    useEffect(() => {   // workspaceId가 변경되면 getAttributes 호출
         // 토큰과 워크스페이스 아이디가 존재하면 API 호출
         if (token && workspaceId) {
             getAttributes(workspaceId, token).then(response => {
                 console.log(response);
             });
         }
-    }, [token, workspaceId]);
+    }, [token, workspaceId, count]);
 
-    useEffect(() => {
+    useEffect(() => {   // workspaceId가 변경되면 getDeal 호출
         if (token && workspaceId) {
             getDeal(workspaceId, token).then(response => {
                 console.log(response);
             });
         }
-    }, [token, workspaceId]);
+    }, [token, workspaceId, count]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
+    const [isEditColumnModalOpen, setIsEditColumnModalOpen] = useState(false);
     const [newDeal, setNewDeal] = useState({
         Company: '',
         name: '',
@@ -184,6 +206,7 @@ const DealGrid = ({companies = []}) => {
         editable: true,
     });
     const [selectedRows, setSelectedRows] = useState([]);
+    const [newHeaderName, setNewHeaderName] = useState('');
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -237,13 +260,16 @@ const DealGrid = ({companies = []}) => {
     };
 
     const handleColumnOk = () => {
-        setColDefs([...colDefs, newColumn]);
+        addAttribute(workspaceId, token, newColumn.headerName);
+        setColDefs([...colDefs, {
+            field: newColumn.headerName,
+            headerName: newColumn.headerName,
+            checkboxSelection: false,
+            editable: true
+        }]);
+        setCount(count + 1);
         setIsColumnModalOpen(false);
-        setNewColumn({
-            headerName: '',
-            field: '',
-            editable: true,
-        });
+        setNewColumn("");
     };
 
     const handleCancel = () => {
@@ -302,7 +328,7 @@ const DealGrid = ({companies = []}) => {
         setSelectedRows([]);
     }
 
-    const onCellValueChanged = async (params) => { //TODO
+    const onCellValueChanged = async (params) => {
         const attributeId = params.colDef.field;
 
         await updateDeal(params.data.dealId, attributeId, params.newValue, workspaceId, token);
@@ -318,10 +344,19 @@ const DealGrid = ({companies = []}) => {
             return row;
         });
         setRowData(updatedRowData);
-        await getDeal(workspaceId, token);
+        setCount(count + 1);
     };
-
-
+    const onColumnMoved = async (event) => {
+        console.log("Column Drag End: ", event);
+        if (event.finished) {
+            //console.log("Column Drag End: ", event);
+            if (event.column) {
+                //console.log("event.colDef: ", event.colDef);
+                await updateAttribute(workspaceId, token, event.column.colDef.field, event.toIndex, event.column.colDef.headerName);
+                //console.log("eventcolumn.colDef: ", event.column.colDef);
+            }
+        }
+    }
 
     const defaultColDef = { // 기본 컬럼 정의
         flex: 1,
@@ -340,39 +375,73 @@ const DealGrid = ({companies = []}) => {
         fontSize: "16px"
     };
 
+    const [selectedColumnField, setSelectedColumnField] = useState('');
+    const showEditColumnModal = () => {    // TODO 컬럼 편집 이벤트 처리
+        setIsEditColumnModalOpen(true);
+    }
+
+    const handleEditColumnCancel = () => {
+        setIsEditColumnModalOpen(false);
+        setNewHeaderName('');
+    }
+
+    const handleEditColumnInputChange = (e) => {
+        setNewHeaderName(e.target.value)
+    };
+    const handleEditColumnOk = (selectedColumnField, newHeaderName) => {
+        selectedColumnField.headerName = newHeaderName;
+        console.log(selectedColumnField);
+        updateAttribute(workspaceId, token, selectedColumnField.field, -1, newHeaderName).then(r => {
+            console.log(r);
+        });
+        setIsEditColumnModalOpen(false);
+        setNewHeaderName('');
+    }
+
+    const handleColumnSelectChange = (value) => {
+        const selectedColumn = colDefs.find(column => column.field === value);
+        setSelectedColumnField(selectedColumn);
+    }
+    const deleteAttribute = async (workspaceId, token, attributeId) => {
+        try {
+            const url = baseURL + `/api/workspaces/${workspaceId}/deals/attributes/${attributeId}`;
+
+            const headers = {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+            const response = await axios.delete(url, {headers});
+            console.log('Attribute deleted:', response.data);
+        } catch (error) {
+            console.error('Error deleting attribute:', error);
+        }
+    }
+    const handleEditColumnDelete = (selectedColumnField) => {
+        deleteAttribute(workspaceId, token, selectedColumnField.field).then(r => {
+            console.log(r);
+        });
+        const updatedColDefs = colDefs.filter(column => column.field !== selectedColumnField.field);
+        setColDefs(updatedColDefs);
+        console.log(updatedColDefs);
+        setIsEditColumnModalOpen(false);
+    }
+
     return (
         <div>
-            <Button type="primary" onClick={showModal} style={buttonStyle}>
+            <Button type="primary" onClick={handleOk} style={buttonStyle}>
                 거래 추가
             </Button>
             <Button type="primary" onClick={showColumnModal} style={buttonStyle}>
                 열 추가
+            </Button>
+            <Button type="primary" onClick={showEditColumnModal} style={buttonStyle}>
+                열 편집
             </Button>
             {selectedRows.length > 0 && (
                 <Button type="danger" onClick={handleDeleteSelected} style={buttonStyle}>
                     선택된 거래 삭제
                 </Button>
             )}
-            <Modal title="거래 추가" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <label>거래 이름을 입력해 주세요: </label>
-                <Input type='text' name="name" value={newDeal.name} onChange={handleInputChange}/> <br/><br/>
-
-                <label>회사를 선택해 주세요: </label>
-                <Select name="Company" value={newDeal.Company} onChange={handleSelectChange} style={{width: '100%'}}>
-                    {companies.map(company => (
-                        <Option key={company.key} value={company.name}>{company.name}</Option>
-                    ))}
-                </Select><br/><br/>
-
-                <label>담당자 전화번호: </label>
-                <Input type='text' name="phone" value={newDeal.phone} onChange={handleInputChange}/> <br/><br/>
-
-                <label>담당자 이메일: </label>
-                <Input type='text' name="email" value={newDeal.email} onChange={handleInputChange}/> <br/><br/>
-
-                <label>메모: </label>
-                <Input type='text' name="memo" value={newDeal.memo} onChange={handleInputChange}/> <br/><br/>
-            </Modal>
 
             <Modal title="열 추가" open={isColumnModalOpen} onOk={handleColumnOk} onCancel={handleColumnCancel}>
                 <label>열 이름을 입력해 주세요: </label>
@@ -380,16 +449,46 @@ const DealGrid = ({companies = []}) => {
                 <br/><br/>
 
             </Modal>
+            <Modal
+                title="열 편집"
+                open={isEditColumnModalOpen}
+                onOk={()=>handleEditColumnOk(selectedColumnField, newHeaderName)}
+                onCancel={handleEditColumnCancel}
+            >
+                <label>열을 선택하세요. </label>
+                <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Select a column"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                        option.children.toLowerCase().indexOf( input.toLowerCase()) >= 0
+                    }
+                    onChange={handleColumnSelectChange}
+                    value={selectedColumnField.headerName}
+                >
+                    {colDefs.map((column, index)=> (
+                        index !== 0 &&
+                        <Option key={column.field} value={column.field}>{column.headerName}</Option>
+                    ))}
+                </Select><br/><br/>
+                <Input type='text' name="headerName" value={newHeaderName} onChange={handleEditColumnInputChange}/>
+                <Button onClick = {() => handleEditColumnDelete(selectedColumnField)}>삭제</Button>
+                <br/><br/>
+
+            </Modal>
 
             <div
                 className="ag-theme-quartz"
                 style={{height: 500, width: "1200px", overflowX: 'auto'}}
+
             >
                 <AgGridReact
                     rowData={rowData}
                     columnDefs={colDefs}
                     defaultColDef={defaultColDef}
                     rowSelection="multiple"
+                    onColumnMoved={onColumnMoved}
                     onSelectionChanged={handleSelectionChanged}
                     onCellValueChanged={onCellValueChanged}
                 />
