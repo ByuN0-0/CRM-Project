@@ -218,12 +218,14 @@ public class DealService {
 
         List<DealAttributeEntity> updateAttributes = new ArrayList<>();
 
-        if (dealAttributeDTO.getEndIndex() != dealAttribute.getAttributeOrder() && dealAttributeDTO.getEndIndex() > 0) {
+        int start = dealAttribute.getAttributeOrder();
+        int end = dealAttributeDTO.getEndIndex();
+
+        if (end > 0 && start != end) {
             List<DealAttributeEntity> dealAttributes = getDealAttributeList(workspaceId);
-            dealAttribute.setAttributeOrder(dealAttributeDTO.getEndIndex());
-            int start = dealAttribute.getAttributeOrder();
-            int end = dealAttributeDTO.getEndIndex();
-            if (dealAttributeDTO.getEndIndex() > dealAttribute.getAttributeOrder()) {
+
+            // Adjust orders of other attributes before changing the order of dealAttribute
+            if (start < end) {
                 for (DealAttributeEntity attribute : dealAttributes) {
                     if (attribute.getAttributeOrder() > start && attribute.getAttributeOrder() <= end) {
                         attribute.setAttributeOrder(attribute.getAttributeOrder() - 1);
@@ -240,17 +242,17 @@ public class DealService {
             }
         }
 
+        // Now change the order of dealAttribute
+        dealAttribute.setAttributeOrder(end);
         System.out.println(dealAttributeDTO.getAttributeName() + " " + dealAttributeDTO.getEndIndex());
         dealAttribute.setAttributeName(dealAttributeDTO.getAttributeName());
         dealAttribute.setAttributeType(dealAttributeDTO.getAttributeType());
 
         updateAttributes.add(dealAttribute);
 
-        // Save all updated attributes in a single transaction
-        List<DealAttributeEntity> savedEntities = dealAttributeRepository.saveAll(updateAttributes);
+        // Save all updated attributes
+        dealAttributeRepository.saveAll(updateAttributes);
 
-        // Return the updated entity (assuming the first one is dealAttribute itself)
-        return savedEntities.get(0);
-
+        return dealAttribute;
     }
 }

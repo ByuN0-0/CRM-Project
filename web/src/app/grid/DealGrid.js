@@ -129,7 +129,7 @@ const DealGrid = ({companies = []}) => {
             }
             const response = await axios.put(url, Data, {headers});
             console.log('Attribute updated:', response.data);
-
+            setCount(count + 1);
         }
         catch (error) {
             console.error('Error updating attribute:', error);
@@ -177,6 +177,7 @@ const DealGrid = ({companies = []}) => {
             getAttributes(workspaceId, token).then(response => {
                 console.log(response);
             });
+            console.log("getAttributes 호출됐음")
         }
     }, [token, workspaceId, count]);
 
@@ -354,6 +355,7 @@ const DealGrid = ({companies = []}) => {
             if (event.column) {
                 //console.log("event.colDef: ", event.colDef);
                 await updateAttribute(workspaceId, token, event.column.colDef.field, event.toIndex, event.column.colDef.headerName);
+
                 //console.log("eventcolumn.colDef: ", event.column.colDef);
             }
         }
@@ -395,6 +397,7 @@ const DealGrid = ({companies = []}) => {
         updateAttribute(workspaceId, token, selectedColumnField.field, -1, newHeaderName).then(r => {
             console.log(r);
         });
+        setCount(count + 1);
         setIsEditColumnModalOpen(false);
         setNewHeaderName('');
     }
@@ -472,9 +475,8 @@ const DealGrid = ({companies = []}) => {
                         index !== 0 &&
                         <Option key={column.field} value={column.field}>{column.headerName}</Option>
                     ))}
-                </Select><br/><br/>
+                </Select><Button onClick = {() => handleEditColumnDelete(selectedColumnField)}>삭제</Button><br/><br/>
                 <Input type='text' name="headerName" value={newHeaderName} onChange={handleEditColumnInputChange}/>
-                <Button onClick = {() => handleEditColumnDelete(selectedColumnField)}>삭제</Button>
                 <br/><br/>
 
             </Modal>
