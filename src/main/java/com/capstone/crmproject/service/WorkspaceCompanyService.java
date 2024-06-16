@@ -1,6 +1,6 @@
 package com.capstone.crmproject.service;
 
-import com.capstone.crmproject.entity.WorkspaceCompanyEntity;
+import com.capstone.crmproject.entity.WorkspaceCompany;
 import com.capstone.crmproject.repository.WorkspaceCompanyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +17,8 @@ public class WorkspaceCompanyService {
     }
 
     @Transactional
-    public WorkspaceCompanyEntity addCompany(UUID workspaceId, UUID companyId) {
-        WorkspaceCompanyEntity workspaceCompanyEntity = new WorkspaceCompanyEntity();
+    public WorkspaceCompany addCompany(UUID workspaceId, UUID companyId) {
+        WorkspaceCompany workspaceCompanyEntity = new WorkspaceCompany();
         workspaceCompanyEntity.setWorkspaceId(workspaceId);
         workspaceCompanyEntity.setCompanyId(companyId);
 
@@ -29,8 +29,8 @@ public class WorkspaceCompanyService {
     }
 
     @Transactional
-    public List<WorkspaceCompanyEntity> getCompanyList(UUID workspaceId) {
-        List<WorkspaceCompanyEntity> companyEntityList = workspaceCompanyRepository.findByWorkspaceId(workspaceId);
+    public List<WorkspaceCompany> getCompanyList(UUID workspaceId) {
+        List<WorkspaceCompany> companyEntityList = workspaceCompanyRepository.findByWorkspaceId(workspaceId);
         if (companyEntityList == null) {
             throw new IllegalArgumentException("Can't find workspace");
         }

@@ -2,7 +2,6 @@ package com.capstone.crmproject.security;
 
 import com.capstone.crmproject.entity.UserEntity;
 import com.capstone.crmproject.repository.UserRepository;
-import com.capstone.crmproject.repository.WorkspaceMemberRepository;
 import com.capstone.crmproject.repository.WorkspaceRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,12 +13,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final WorkspaceRepository workspaceRepository;
-    private final WorkspaceMemberRepository workspaceMemberRepository;
 
-    public CustomUserDetailsService(UserRepository userRepository, WorkspaceRepository workspaceRepository, WorkspaceMemberRepository workspaceMemberRepository) {
+
+    public CustomUserDetailsService(UserRepository userRepository, WorkspaceRepository workspaceRepository) {
         this.userRepository = userRepository;
         this.workspaceRepository = workspaceRepository;
-        this.workspaceMemberRepository = workspaceMemberRepository;
+
     }
 
     @Override

@@ -39,10 +39,12 @@ public class JWTFilter extends OncePerRequestFilter {
         String username = jwtUtil.getUsername(token);
         UserRole role = UserRole.valueOf(jwtUtil.getRole(token)); // 에러 발생할 수도 있음 유의
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(username);
-        userEntity.setRole(role);
-        userEntity.setPassword("password");
+        UserEntity userEntity = new UserEntity(
+                username,
+                "password",
+                role,
+                null
+        );
 
         CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 

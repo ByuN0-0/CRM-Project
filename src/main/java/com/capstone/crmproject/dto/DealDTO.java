@@ -6,15 +6,11 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 public class DealDTO {
-    private UUID workspaceId;
-    private UUID companyId;
-    private Round round;
-    private String phoneNumber;
-    private String email;
-    private String memo;
-    private String customAttribute;
+    private String value;
 }
